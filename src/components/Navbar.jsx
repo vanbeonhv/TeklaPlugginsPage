@@ -17,6 +17,13 @@ const Navbar = () => {
             </div>
           </Link>
           <div>
+            <img
+              src='../src/assets/img/tekla_structures.png'
+              alt=''
+              className=''
+            />
+          </div>
+          <div>
             <ul className='flex text-lg text-gray-600 capitalize cursor-pointer font-medium'>
               <Link to='/plugins'>
                 <li className='p-2 hover:text-black mr-2'>plugins</li>
@@ -24,8 +31,8 @@ const Navbar = () => {
               <Link to='/pricing'>
                 <li className='p-2 hover:text-black mr-2'>pricing</li>
               </Link>
-              <Link to='/contact'>
-                <li className='p-2 hover:text-black mr-2'>contact</li>
+              <Link to='/about'>
+                <li className='p-2 hover:text-black mr-2'>about</li>
               </Link>
               <button className='px-5 bg-bright-blue-500 text-white rounded-lg font-medium hover:bg-bright-blue-700'>
                 Sign up

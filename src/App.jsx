@@ -15,7 +15,7 @@ const App = () => {
       <Route path='/plugins' element={<Plugins />} />
       <Route path='/plugins/:id' element={<PluginDetail />} />
       <Route path='/pricing' element={<Pricing />} />
-      <Route path='/contact' element={<Contact />} />
+      <Route path='/about' element={<Contact />} />
       <Route path='/signup' element={<SignUp />} />
       <Route path='/login' element={<Login />} />
     </Routes>
