@@ -1,17 +1,16 @@
 import React from 'react';
 
-const Button = (props) => {
-  const { color = 'bg-bright-blue-500 hover:bg-bright-blue-700', className } =
-    props;
-
+const Button = ({ btnType, children }) => {
+  if (btnType === 'primary') {
+  }
   return (
     <button
-      className={`${color} ${className} px-5 py-2  text-white rounded-lg font-medium capitalize`}
-      onClick={props.onClick}
+      className={`${btnType} px-5 py-2 mx-2 text-white rounded-lg font-medium capitalize`}
     >
-      {props.children}
+      {children}
     </button>
   );
 };
 
+// ${btnType}
 export default Button;
