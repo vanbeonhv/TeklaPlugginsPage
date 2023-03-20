@@ -1,1 +1,56 @@
-const data = {};
+const data = {
+  plugin: [
+    {
+      id: 1,
+      name: 'revit import',
+      description:
+        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae velit inventore quibusdam suscipit nihil labore minus!',
+      image: 'https://ttcso.com/wp-content/uploads/2020/10/revit.jpg',
+      file: 'https://wohhup-my.sharepoint.com/:u:/g/personal/nguyen_huuvan_wohhup_com_vn/Eezo9i0vjNVAjQXyHzGLYCABtqP53KKtlxVdT7XW12w6Qg?e=MFormq'
+    },
+
+    {
+      id: 2,
+      name: 'break line',
+      description:
+        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae velit inventore quibusdam suscipit nihil labore minus!',
+      image: 'https://ttcso.com/wp-content/uploads/2020/10/revit.jpg',
+      file: 'https://wohhup-my.sharepoint.com/:u:/g/personal/nguyen_huuvan_wohhup_com_vn/Eezo9i0vjNVAjQXyHzGLYCABtqP53KKtlxVdT7XW12w6Qg?e=MFormq'
+    },
+    {
+      id: 3,
+      name: 'numbering tool',
+      description:
+        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae velit inventore quibusdam suscipit nihil labore minus!',
+      image: 'https://ttcso.com/wp-content/uploads/2020/10/revit.jpg',
+      file: 'https://wohhup-my.sharepoint.com/:u:/g/personal/nguyen_huuvan_wohhup_com_vn/Eezo9i0vjNVAjQXyHzGLYCABtqP53KKtlxVdT7XW12w6Qg?e=MFormq'
+    },
+
+    {
+      id: 4,
+      name: 'numbering tool',
+      description:
+        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae velit inventore quibusdam suscipit nihil labore minus!',
+      image: 'https://ttcso.com/wp-content/uploads/2020/10/revit.jpg',
+      file: 'https://wohhup-my.sharepoint.com/:u:/g/personal/nguyen_huuvan_wohhup_com_vn/Eezo9i0vjNVAjQXyHzGLYCABtqP53KKtlxVdT7XW12w6Qg?e=MFormq'
+    }
+  ],
+  pluginDetail: [
+    {
+      id: 1,
+      author: 'marc',
+      avatar: 'https://i.pravatar.cc/300?img=3',
+      time: '21/03/2023',
+      heading: 'Import PPVC model from Revit to Tekla',
+
+      content: [
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, nisi cumque debitis mollitia ullam accusantium non, odit eius obcaecati dolorum quidem consequatur hic sequi! Sit est tempora provident iure corrupti?',
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, nisi cumque debitis mollitia ullam accusantium non, odit eius obcaecati dolorum quidem consequatur hic sequi! Sit est tempora provident iure corrupti?',
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, nisi cumque debitis mollitia ullam accusantium non, odit eius obcaecati dolorum quidem consequatur hic sequi! Sit est tempora provident iure corrupti?'
+      ],
+      image: ['']
+    }
+  ]
+};
+
+export default data;

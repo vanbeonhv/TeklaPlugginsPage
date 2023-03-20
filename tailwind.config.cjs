@@ -48,7 +48,33 @@ module.exports = {
           width: '100%',
           marginRight: 'auto',
           marginLeft: 'auto'
-        }
+        },
+        '@media (min-width: 1920px)':{
+          '.container':{
+            minWidth: '1880px'
+          }
+        },
+        '@media (min-width: 1536px)':{
+          '.container':{
+            minWidth: '1420px'
+          }
+        },
+        '@media (min-width: 1280px)':{
+          '.container':{
+            minWidth: '1160px'
+          }
+        },
+        '@media (min-width: 768px)':{
+          '.container':{
+            maxWidth: '700px'
+          }
+        },
+
+        '@media (max-width: 767px)':{
+          '.container':{
+            maxWidth: '500px'
+          }
+        },
       });
     })
   ]

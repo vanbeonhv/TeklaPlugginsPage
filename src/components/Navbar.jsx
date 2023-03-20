@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <>
       <header className='h-17 fixed w-full p-3 bg-white shadow-md z-50'>
-        <nav className=' flex justify-between items-center'>
+        <nav className=' flex justify-between items-center relative top-[-5px]'>
           <div className='flex'>
             <Link to='/'>
               <div className='site-logo flex items-center'>
