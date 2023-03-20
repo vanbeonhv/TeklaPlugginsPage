@@ -1,0 +1,67 @@
+.banner-header {
+  position: relative;
+}
+
+.banner-header-left::before {
+  content: '';
+  width: 300px;
+  height: 150px;
+  background: rgba(255, 255, 255, 0.1);
+  position: absolute;
+  left: -90px;
+  top: 0;
+  border-radius: 6px;
+  -webkit-transform: skew(25deg, -12deg);
+  transform: skew(25deg, -12deg);
+  moz-transform-origin: top left;
+  -webkit-transform-origin: top left;
+  transform-origin: top left;
+}
+
+.banner-header-left:after {
+  content: '';
+  width: 150px;
+  height: 600px;
+  background: rgba(255, 255, 255, 0.15);
+  position: absolute;
+  left: 0px;
+  top: 30px;
+  border-radius: 4px;
+  -webkit-transform: skew(-25deg, 10deg);
+  transform: skew(-25deg, 10deg);
+  moz-transform-origin: top left;
+  -webkit-transform-origin: top left;
+  transform-origin: top left;
+}
+
+.banner-header-right:before {
+  content: '';
+  width: 300px;
+  height: 150px;
+  background: rgba(255, 255, 255, 0.1);
+  position: absolute;
+  right: -60px;
+  top: 0;
+  border-radius: 4px;
+  -webkit-transform: skew(25deg, -10deg);
+  transform: skew(25deg, -10deg);
+  moz-transform-origin: top left;
+  -webkit-transform-origin: top left;
+  transform-origin: top left;
+}
+
+.banner-header-right:after {
+  content: '';
+  width: 150px;
+  height: 600px;
+  background: rgba(255, 255, 255, 0.15);
+  position: absolute;
+  right: 0px;
+  top: 30px;
+  border-radius: 6px;
+  -webkit-transform: skew(25deg, 10deg);
+  transform: skew(25deg, 10deg);
+  moz-transform-origin: top left;
+  -webkit-transform-origin: top left;
+  transform-origin: top left;
+}

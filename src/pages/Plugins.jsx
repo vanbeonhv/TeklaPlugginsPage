@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 const Plugins = () => {
   return (
     <div className='w-full '>
-      <div className='plugin-header bg-bright-blue-500 py-10 text-center'>
+      <div className='banner-header bg-bright-blue-500 py-10 text-center'>
+        <div className='banner-header-left'></div>
+        <div className='banner-header-right'></div>
         <div className='container mx-auto'>
           <h3 className='text-white text-4xl font-semibold capitalize'>
             Model faster. Drawing faster.

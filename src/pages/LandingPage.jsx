@@ -1,14 +1,13 @@
-import './LandingPage.css';
 import { AiFillHeart } from 'react-icons/ai';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 function LandingPage() {
   return (
-    <section className='pt-12'>
-      <div className='container mx-auto'>
-        <div className='grid grid-cols-2 mx-5'>
-          <div className='w-full'>
-            <h1 className='text-5xl font-bold mb-5 cursor-default'>
+    <section className='pt-12 w-full '>
+      <div className='container'>
+        <div className='grid md:grid-cols-2 sm:grid-cols-1 mx-5 mx-12'>
+          <div className='w-full lg:mt-16 xl:mt-20'>
+            <h1 className='text-5xl font-bold mb-5 cursor-default '>
               Try some useful Tekla plugins
             </h1>
             <p className='inline-block text-gray-600 font-medium text-lg cursor-default'>
@@ -27,7 +26,7 @@ function LandingPage() {
               <Button btnType='btn-secondary'>How to install?</Button>
             </div>
           </div>
-          <div className='w-full'>
+          <div className='w-full mt-10'>
             <img
               src='https://themes.3rdwavemedia.com/coderpro/bs5/2.0/assets/images/promo-figure-alt.svg'
               alt=''

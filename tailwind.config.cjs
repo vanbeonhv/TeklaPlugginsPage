@@ -4,6 +4,13 @@ const plugin = require('tailwindcss/plugin');
 module.exports = {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
+    screens: {
+      'sm': '768px',
+      'md': '1024px',
+      'lg': '1280px',
+      'xl': '1536px',
+      '2xl': '1920px'
+    },
     extend: {
       fontFamily: {
         openSans: ['Open Sans', 'sans-serif']
@@ -36,6 +43,11 @@ module.exports = {
             backgroundColor: theme('backgroundColor.gray.600'),
             boxShadow: theme('boxShadow.lg')
           }
+        },
+        '.container': {
+          width: '100%',
+          marginRight: 'auto',
+          marginLeft: 'auto'
         }
       });
     })

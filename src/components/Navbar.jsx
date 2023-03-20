@@ -4,24 +4,26 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   return (
     <>
-      <header className='header fixed w-full p-3 bg-white shadow-md z-50'>
-        <nav className='navbar flex justify-between items-center'>
-          <Link to='/'>
-            <div className='site-logo flex items-center'>
-              <RxCodesandboxLogo className='text-4xl text-bright-blue-500 m-2' />
+      <header className='h-17 fixed w-full p-3 bg-white shadow-md z-50'>
+        <nav className=' flex justify-between items-center'>
+          <div className='flex'>
+            <Link to='/'>
+              <div className='site-logo flex items-center'>
+                <RxCodesandboxLogo className='text-4xl text-bright-blue-500 m-2' />
 
-              <span className='text-2xl font-bold text-gray-800'>
-                Marc
-                <span className='font-extralight text-gray-600'>Pro</span>
-              </span>
+                <span className='text-2xl font-bold text-gray-800'>
+                  Marc
+                  <span className='font-extralight text-gray-600'>Pro</span>
+                </span>
+              </div>
+            </Link>
+            <div className='ml-4'>
+              <img
+                src='../src/assets/img/tekla_structures.png'
+                alt=''
+                className='h-14 '
+              />
             </div>
-          </Link>
-          <div>
-            <img
-              src='../src/assets/img/tekla_structures.png'
-              alt=''
-              className=''
-            />
           </div>
           <div>
             <ul className='flex text-lg text-gray-600 capitalize cursor-pointer font-medium'>
