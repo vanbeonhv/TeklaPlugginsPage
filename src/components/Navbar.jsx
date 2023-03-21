@@ -28,15 +28,21 @@ const Navbar = () => {
           <div>
             <ul className='flex text-lg text-gray-600 capitalize cursor-pointer font-medium'>
               <Link to='/plugins'>
-                <li className='p-2 hover:text-black mr-2'>plugins</li>
+                <li className='p-2 hover:text-black mr-2 inline-block'>
+                  plugins
+                </li>
               </Link>
               <Link to='/pricing'>
-                <li className='p-2 hover:text-black mr-2'>pricing</li>
+                <li className='p-2 hover:text-black mr-2 inline-block'>
+                  pricing
+                </li>
               </Link>
               <Link to='/about'>
-                <li className='p-2 hover:text-black mr-2'>about</li>
+                <li className='p-2 hover:text-black mr-2 inline-block '>
+                  about
+                </li>
               </Link>
-              <button className='px-5 bg-bright-blue-500 text-white rounded-lg font-medium hover:bg-bright-blue-700'>
+              <button className='px-5 bg-bright-blue-500 text-white rounded-lg font-medium hover:bg-bright-blue-700 inline-block'>
                 Sign up
               </button>
             </ul>

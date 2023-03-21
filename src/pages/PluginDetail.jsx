@@ -24,10 +24,10 @@ const PluginDetail = () => {
           </div>
           <article>
             <header className='title'>
-              <h1 className='font-bold text-5xl mt-8 leading-[3.5rem]'>
+              <h1 className='font-extrabold text-5xl mt-8 leading-[3.5rem]'>
                 {heading}
               </h1>
-              <div className='mb-5 mt-2 min-h-[42px]'>
+              <div className='mb-5 mt-2 min-h-[42px] text-sm'>
                 <ul className=''>
                   {tags.map((tag) => {
                     let hoverBoder;
@@ -86,7 +86,15 @@ const PluginDetail = () => {
             </section>
           </article>
         </main>
-        <aside className='col-span-3 bg-cyan-100'>aside</aside>
+        <aside className='col-span-3 bg-cyan-100'>
+          <div className='rounded border-slate-100 border'>
+            <div className='bg-black min-h-[32px] w-full'></div>
+            <div>
+              <img src={avatar} alt='avatar' className='h-12 border-sm' />
+              <h3>{author}</h3>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   );
