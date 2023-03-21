@@ -48,7 +48,8 @@ const data = {
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, nisi cumque debitis mollitia ullam accusantium non, odit eius obcaecati dolorum quidem consequatur hic sequi! Sit est tempora provident iure corrupti?',
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, nisi cumque debitis mollitia ullam accusantium non, odit eius obcaecati dolorum quidem consequatur hic sequi! Sit est tempora provident iure corrupti?'
       ],
-      image: ['']
+      image: [''],
+      tags: ['PPVC', 'modeling', 'drawing', 'application']
     }
   ]
 };

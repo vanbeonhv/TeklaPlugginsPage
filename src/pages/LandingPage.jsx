@@ -20,9 +20,9 @@ function LandingPage() {
               These plugins will help works faster and save a lot of time.
             </p>
             <div className='mt-5'>
-              <Button btnType='btn-primary'>
-                <Link to='/plugins'>Download plugins</Link>
-              </Button>
+              <Link to='/plugins'>
+                <Button btnType='btn-primary'>Download plugins</Button>
+              </Link>
               <Button btnType='btn-secondary'>How to install?</Button>
             </div>
           </div>
