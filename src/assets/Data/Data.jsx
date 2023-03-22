@@ -38,7 +38,7 @@ const data = {
   pluginDetail: [
     {
       id: 1,
-      author: 'marc',
+      author: 'marc nguyen',
       avatar: 'https://i.pravatar.cc/300?img=3',
       time: '21/03/2023',
       heading: 'Import PPVC model from Revit to Tekla',

@@ -23,7 +23,7 @@ const Plugins = () => {
           <div className='overview py-5'>
             <div className='grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-4 lg:gap-8 xl:gap-6 md:gap-16'>
               {data.plugin.map((plugin) => (
-                <div className='col-12 col-lg-4 border rounded-2xl p-4 shadow-sm  hover:shadow-md hover:bg-bright-blue-100 hover:shadow-lg hover:bg-bright-blue-100 hover:translate-y-[-2px] group'>
+                <div className='col-12 col-lg-4 border rounded-2xl p-4 shadow-sm  hover:shadow-md hover:shadow-lg  hover:translate-y-[-2px] group'>
                   <div className=' '>
                     <div className='relative '>
                       <h5 className=' mb-3 text-2xl font-semibold text-center capitalize cursor-default'>
