@@ -95,7 +95,7 @@ const PluginDetail = () => {
                 alt='avatar'
                 className='h-12 border-sm rounded-md relative top-[-15px]'
               />
-              <h3 className='inline-block text-xl font-bold tracking-wider capitalize text-gray-700 cursor-pointer hover:text-bright-blue-500 delay-75 ease-in-out'>
+              <h3 className='inline-block text-xl font-bold  capitalize text-gray-700 cursor-pointer hover:text-bright-blue-500 delay-75 ease-in-out'>
                 {author}
               </h3>
             </div>

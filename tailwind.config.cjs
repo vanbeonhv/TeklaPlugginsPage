@@ -6,9 +6,9 @@ module.exports = {
   theme: {
     screens: {
       'sm': '768px',
-      'md': '1024px',
-      'lg': '1280px',
-      'xl': '1536px',
+      'md': '992px',
+      'lg': '1200px',
+      'xl': '1400px',
       '2xl': '1920px'
     },
     extend: {
@@ -49,33 +49,41 @@ module.exports = {
           marginRight: 'auto',
           marginLeft: 'auto'
         },
-        '@media (min-width: 1920px)':{
+        // '@media (min-width: 1920px)':{
+        //   '.container':{
+        //     maxWidth: '1880px'
+        //   }
+        // },
+  
+        '@media (max-width: 576px)':{
           '.container':{
-            minWidth: '1880px'
+            maxWidth: '540px'
           }
         },
-        '@media (min-width: 1536px)':{
+        '@media (max-width: 768px)':{
           '.container':{
-            minWidth: '1420px'
+            maxWidth: '720px'
           }
         },
-        '@media (min-width: 1280px)':{
+  
+        '@media (min-width: 992px)':{
           '.container':{
-            minWidth: '1160px'
+            maxWidth: '960px'
           }
         },
-        '@media (min-width: 768px)':{
+        '@media (min-width: 1200px)':{
           '.container':{
-            maxWidth: '700px'
+            maxWidth: '1140px'
           }
         },
-
-        '@media (max-width: 767px)':{
+        '@media (min-width: 1400px)':{
           '.container':{
-            maxWidth: '500px'
+            maxWidth: '1320px'
           }
-        },
-      });
+      },
+      
+      
+    });
     })
   ]
 };

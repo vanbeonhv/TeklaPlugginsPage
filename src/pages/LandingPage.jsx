@@ -1,13 +1,15 @@
 import { AiFillHeart } from 'react-icons/ai';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
+import Card from '../components/Card';
+import { MdFastForward } from 'react-icons/md';
 function LandingPage() {
   return (
-    <section className='pt-12 w-full '>
-      <div className='container'>
-        <div className='grid md:grid-cols-2 sm:grid-cols-1 mx-5 mx-12'>
-          <div className='w-full lg:mt-16 xl:mt-20'>
-            <h1 className='text-5xl font-bold mb-5 cursor-default '>
+    <main className='pt-12 w-full '>
+      <section className='container'>
+        <div className='grid md:grid-cols-2 sm:grid-cols-1'>
+          <div className='w-full '>
+            <h1 className='text-6xl font-bold mb-5 mt-10 cursor-default '>
               Try some useful Tekla plugins
             </h1>
             <p className='inline-block text-gray-600 font-medium text-lg cursor-default'>
@@ -33,8 +35,26 @@ function LandingPage() {
             />
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <section className=' bg-bright-blue-100'>
+        <div className='container'>
+          <div className='text-center py-14'>
+            <h4 className='text-4xl font-bold capitalize'>
+              made for BIM modellers
+            </h4>
+            <p className='capitalize text-xl text-gray-500 pt-5'>
+              automate your work
+            </p>
+          </div>
+          <div className='flex '>
+            <Card icon={<MdFastForward />} />
+            <Card />
+            <Card />
+            <Card />
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
 
