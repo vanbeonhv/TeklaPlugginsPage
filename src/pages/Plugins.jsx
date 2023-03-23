@@ -2,6 +2,7 @@ import React from 'react';
 import { HiDownload } from 'react-icons/hi';
 import { BsArrowRight } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import data from '../assets/Data/Data';
 const Plugins = () => {
   return (
@@ -23,7 +24,10 @@ const Plugins = () => {
           <div className='overview py-5'>
             <div className='grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-4 lg:gap-8 xl:gap-6 md:gap-16'>
               {data.plugin.map((plugin) => (
-                <div className='col-12 col-lg-4 border rounded-2xl p-4 sm:m-8 md:m-8 lg:m-4 shadow-sm  hover:shadow-md hover:shadow-lg  hover:translate-y-[-2px]'>
+                <div
+                  className='col-12 col-lg-4 border rounded-2xl p-4 sm:m-8 md:m-8 lg:m-4 shadow-sm  hover:shadow-md hover:shadow-lg  hover:translate-y-[-2px]'
+                  key={uuidv4()}
+                >
                   <div className=' '>
                     <div className='relative '>
                       <h5 className=' mb-3 text-2xl font-semibold text-center capitalize cursor-default'>

@@ -2,21 +2,46 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import data from '../assets/Data/Data';
 import { v4 as uuidv4 } from 'uuid';
+import { RiHeartLine } from 'react-icons/ri';
+import { FiPlus } from 'react-icons/fi';
+import { BsShare } from 'react-icons/bs';
 
 const PluginDetail = () => {
+  const handleLike = () => {
+    const likeIcon = document.querySelector('.like-icon');
+    likeIcon.classList.toggle('fill-red-600');
+    // likeIcon.classList.toggle('text-red-600');
+  };
   const { id } = useParams();
   const detail = data.pluginDetail.find((detail) => detail.id == id);
   const { _id, author, avatar, time, heading, content, image, tags } = detail;
   return (
     <div className='bg-gray-100'>
       <div className='p-4 grid grid-cols-12 container'>
-        <aside className='col-span-1'>aside</aside>
+        <aside className='col-span-1'>
+          <div className='flex flex-col items-end justify-around pt-20 pr-2 gap-4'>
+            <div className='flex flex-col  items-center gap-2'>
+              <div className='relative text-slate-600'>
+                <RiHeartLine
+                  className='like-icon text-2xl cursor-pointer hover:text-red-600 delay-75 relative'
+                  onClick={handleLike}
+                />
+                <FiPlus className='absolute bottom-0 right-0 rounded-full bg-white text-xs' />
+              </div>
+              <p className='text-slate-600'>0</p>
+            </div>
+            <div className='flex flex-col  items-center gap-2'>
+              <BsShare className='text-xl cusror-pointer delay-75 hover:text-blue-600 ' />
+              <p className='text-slate-600'>0</p>
+            </div>
+          </div>
+        </aside>
         <main className='col-span-8 bg-white pt-8 px-16 mx-4 rounded-md border border-slate-200'>
           <div className='flex justify-start items-center'>
             <img src={avatar} alt='avatar' className='h-10 rounded-full' />
             <div className='ml-3'>
               <h5 className='text-sm font-bold capitalize'>{author}</h5>
-              <div className='flex text-gray-500 text-xs'>
+              <div className='flex text-gray-500 text-xs '>
                 <p>Posted on </p>
                 <p className='pl-1'>{time}</p>
               </div>
