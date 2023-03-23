@@ -3,6 +3,7 @@ import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import { MdFastForward } from 'react-icons/md';
+
 function LandingPage() {
   return (
     <main className='pt-12 w-full '>
@@ -46,11 +47,27 @@ function LandingPage() {
               automate your work
             </p>
           </div>
-          <div className='flex '>
-            <Card icon={<MdFastForward />} />
-            <Card />
-            <Card />
-            <Card />
+          <div className='flex w-full gap-5 pb-24'>
+            <Card
+              iconName='block'
+              header='diverse'
+              content={`Our target is offering a wide range of applications to suit your every need. But we have just started so more plugins are coming soon!`}
+            />
+            <Card
+              iconName='fast'
+              header='lightning fast'
+              content={`We understand that time is of the essence. So plugins will help us to work faster`}
+            />
+            <Card
+              iconName='update'
+              header='update'
+              content={`We constantly updates our plugins store with new and improved versions of existing plugins to meet your needs.`}
+            />
+            <Card
+              iconName='docs'
+              header='fully documented'
+              content={`We ensure that all of the apps in our store are fully documented, so you can easily find the information you need to get the most out of plugins`}
+            />
           </div>
         </div>
       </section>
