@@ -80,12 +80,13 @@ module.exports = {
           '.container':{
             maxWidth: '1320px'
           }
-      },
-      '@media (min-width: 1800px)':{
-        '.container':{
-          maxWidth: '1700px'
-        }
-    },
+      }
+    //   ,
+    //   '@media (min-width: 1800px)':{
+    //     '.container':{
+    //       maxWidth: '1700px'
+    //     }
+    // },
       
       
     });

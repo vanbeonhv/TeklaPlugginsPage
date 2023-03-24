@@ -9,6 +9,9 @@ export default defineConfig({
   },
   css: {
     devSourcemap: true
+  },
+  define: {
+    'process.env': process.env
   }
   // resolve: {
   //   alias: {

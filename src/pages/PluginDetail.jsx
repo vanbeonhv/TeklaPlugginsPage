@@ -1,10 +1,12 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import data from '../assets/Data/Data';
 import { v4 as uuidv4 } from 'uuid';
 import { RiHeartLine } from 'react-icons/ri';
 import { FiPlus } from 'react-icons/fi';
 import { BsShare } from 'react-icons/bs';
+import { HiOutlineDownload } from 'react-icons/hi';
+import YoutubeEmbed from '../components/YoutubeEmbed';
 
 const PluginDetail = () => {
   const handleLike = () => {
@@ -13,6 +15,8 @@ const PluginDetail = () => {
     // likeIcon.classList.toggle('text-red-600');
   };
   const { id } = useParams();
+  const plugin = data.plugin.find((plugin) => plugin.id);
+
   const detail = data.pluginDetail.find((detail) => detail.id == id);
   const { _id, author, avatar, time, heading, content, image, tags } = detail;
   return (
@@ -26,12 +30,18 @@ const PluginDetail = () => {
                   className='like-icon text-2xl cursor-pointer hover:text-red-600 delay-75 relative'
                   onClick={handleLike}
                 />
-                <FiPlus className='absolute bottom-0 right-0 rounded-full bg-white text-xs' />
+                <FiPlus className='absolute bottom-0 right-0 rounded-full bg-white text-xs text-slate-600' />
               </div>
               <p className='text-slate-600'>0</p>
             </div>
-            <div className='flex flex-col  items-center gap-2'>
+            <div className='flex flex-col  items-center gap-2 text-slate-600 pr-1'>
               <BsShare className='text-xl cusror-pointer delay-75 hover:text-blue-600 ' />
+              <p className='text-slate-600'>0</p>
+            </div>
+            <div className='flex flex-col  items-center gap-2 text-slate-600'>
+              <Link to={plugin.file} target='_blank'>
+                <HiOutlineDownload className='text-2xl cusror-pointer delay-75 hover:text-blue-600 ' />
+              </Link>
               <p className='text-slate-600'>0</p>
             </div>
           </div>
@@ -53,6 +63,7 @@ const PluginDetail = () => {
                 {heading}
               </h1>
               <div className='mb-5 mt-2 min-h-[42px] text-sm'>
+                <YoutubeEmbed embedId='CnZxamAbSnw' />
                 <ul className=''>
                   {tags.map((tag) => {
                     let hoverBoder;

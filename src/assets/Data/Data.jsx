@@ -58,4 +58,5 @@ const data = {
   ]
 };
 
+JSON.stringify(data);
 export default data;
