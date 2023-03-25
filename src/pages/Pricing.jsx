@@ -1,9 +1,8 @@
 import React from 'react';
-
 const Pricing = () => {
   return (
     <div className='container'>
-      <div>Some pricing</div>
+      <img src='src/assets/img/free-red-stamp-white-background.jpg' alt='' />
     </div>
   );
 };

@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import data from '../assets/Data/Data';
 import { v4 as uuidv4 } from 'uuid';
 import { RiHeartLine } from 'react-icons/ri';
 import { FiPlus } from 'react-icons/fi';
 import { BsShare } from 'react-icons/bs';
 import { HiOutlineDownload } from 'react-icons/hi';
 import YoutubeEmbed from '../components/YoutubeEmbed';
+import { getDatabase, ref, child, get } from 'firebase/database';
+import app from '../../firebase';
+import Button from '../components/Button';
 
 const PluginDetail = () => {
   const handleLike = () => {
@@ -15,12 +17,48 @@ const PluginDetail = () => {
     // likeIcon.classList.toggle('text-red-600');
   };
   const { id } = useParams();
-  const plugin = data.plugin.find((plugin) => plugin.id);
 
-  const detail = data.pluginDetail.find((detail) => detail.id == id);
-  const { _id, author, avatar, time, heading, content, image, tags } = detail;
+  const [pluginDetail, setPluginDetail] = useState('');
+  const [pluginPost, setPluginPost] = useState({
+    _id: '',
+    author: '',
+    avatar: '',
+    time: '',
+    heading: '',
+    content: '',
+    image: '',
+    tags: ''
+  });
+  const dbRef = ref(getDatabase(app));
+  useEffect(() => {
+    get(child(dbRef, `plugin/${id}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          setPluginDetail(snapshot.val());
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log(id);
+    get(child(dbRef, `pluginDetail/${id}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          setPluginPost(snapshot.val());
+        }
+      })
+      .catch((error) => {
+        console.error(error, ' from pluginDetail');
+      });
+  }, []);
+
+  const { _id, author, avatar, time, heading, content, image, tags } =
+    pluginPost;
   return (
-    <div className='bg-gray-100'>
+    <div className='bg-gray-100 pb-16'>
       <div className='p-4 grid grid-cols-12 container'>
         <aside className='col-span-1'>
           <div className='flex flex-col items-end justify-around pt-20 pr-2 gap-4'>
@@ -39,14 +77,14 @@ const PluginDetail = () => {
               <p className='text-slate-600'>0</p>
             </div>
             <div className='flex flex-col  items-center gap-2 text-slate-600'>
-              <Link to={plugin.file} target='_blank'>
+              <Link to={pluginDetail ? pluginDetail.file : ''} target='_blank'>
                 <HiOutlineDownload className='text-2xl cusror-pointer delay-75 hover:text-blue-600 ' />
               </Link>
               <p className='text-slate-600'>0</p>
             </div>
           </div>
         </aside>
-        <main className='col-span-8 bg-white pt-8 px-16 mx-4 rounded-md border border-slate-200'>
+        <main className='col-span-8 bg-white py-8 px-16 mx-4 rounded-md border border-slate-200'>
           <div className='flex justify-start items-center'>
             <img src={avatar} alt='avatar' className='h-10 rounded-full' />
             <div className='ml-3'>
@@ -63,63 +101,79 @@ const PluginDetail = () => {
                 {heading}
               </h1>
               <div className='mb-5 mt-2 min-h-[42px] text-sm'>
-                <YoutubeEmbed embedId='CnZxamAbSnw' />
-                <ul className=''>
-                  {tags.map((tag) => {
-                    let hoverBoder;
-                    let hoverBg;
-                    let text;
-                    switch (tag) {
-                      case 'PPVC':
-                        hoverBoder = `hover:border-red-200`;
-                        hoverBg = 'hover:bg-red-100';
-                        text = 'text-red-500';
-                        break;
-                      case 'modeling':
-                        hoverBoder = `hover:border-emerald-200`;
-                        hoverBg = 'hover:bg-emerald-100';
-                        text = 'text-emerald-500';
-                        break;
+                <ul className='pb-5'>
+                  {tags
+                    ? tags.map((tag) => {
+                        let hoverBoder;
+                        let hoverBg;
+                        let text;
+                        switch (tag) {
+                          case 'PPVC':
+                            hoverBoder = `hover:border-red-200`;
+                            hoverBg = 'hover:bg-red-100';
+                            text = 'text-red-500';
+                            break;
+                          case 'modeling':
+                            hoverBoder = `hover:border-emerald-200`;
+                            hoverBg = 'hover:bg-emerald-100';
+                            text = 'text-emerald-500';
+                            break;
 
-                      case 'drawing':
-                        hoverBoder = `hover:border-violet-200`;
-                        hoverBg = 'hover:bg-violet-100';
-                        text = 'text-violet-500';
-                        break;
-                      case 'plugin':
-                        hoverBoder = `hover:border-amber-200`;
-                        hoverBg = 'hover:bg-amber-100';
-                        text = 'text-amber-500';
-                        break;
-                      case 'application':
-                        hoverBoder = `hover:border-sky-200`;
-                        hoverBg = 'hover:bg-sky-100';
-                        text = 'text-sky-500';
-                        break;
-                      default:
-                        break;
-                    }
+                          case 'drawing':
+                            hoverBoder = `hover:border-violet-200`;
+                            hoverBg = 'hover:bg-violet-100';
+                            text = 'text-violet-500';
+                            break;
+                          case 'plugin':
+                            hoverBoder = `hover:border-amber-200`;
+                            hoverBg = 'hover:bg-amber-100';
+                            text = 'text-amber-500';
+                            break;
+                          case 'application':
+                            hoverBoder = `hover:border-sky-200`;
+                            hoverBg = 'hover:bg-sky-100';
+                            text = 'text-sky-500';
+                            break;
+                          default:
+                            break;
+                        }
 
-                    return (
-                      <li
-                        key={uuidv4()}
-                        className={`inline-block p-1 hover:border ${hoverBoder}  ${hoverBg} rounded-md ml-1 delay-75 cursor-default`}
-                      >
-                        <span className={`${text}`}>#</span>
-                        {tag}
-                      </li>
-                    );
-                  })}
+                        return (
+                          <li
+                            key={uuidv4()}
+                            className={`inline-block p-1 hover:border hover:p-[3px] ${hoverBoder}  ${hoverBg} rounded-md ml-1 delay-75 cursor-default`}
+                          >
+                            <span className={`${text}`}>#</span>
+                            {tag}
+                          </li>
+                        );
+                      })
+                    : ''}
                 </ul>
+                <YoutubeEmbed embedId='CnZxamAbSnw' />
               </div>
             </header>
             <section>
-              {content.map((text) => (
-                <p key={uuidv4()} className='py-4'>
-                  {text}
-                </p>
-              ))}
+              {content ? (
+                content.map((text) => (
+                  <p key={uuidv4()} className='py-4'>
+                    {text}
+                  </p>
+                ))
+              ) : (
+                <p>Loading...</p>
+              )}
             </section>
+            <div className='text-center'>
+              <Button
+                btnType='btn-primary'
+                iconName='download'
+                blank
+                linkTo={pluginDetail ? pluginDetail.file : ''}
+              >
+                Download
+              </Button>
+            </div>
           </article>
         </main>
         <aside className='col-span-3 '>
@@ -157,7 +211,6 @@ const PluginDetail = () => {
                   className='pt-1 hover:text-bright-blue-700'
                   href='mailto:nguyen_huuvan@wohhup.com.vn'
                 >
-                  {' '}
                   Nguyen_huuvan@wohhup.com.vn
                 </a>
               </div>

@@ -32,6 +32,7 @@ module.exports = {
       addComponents({
         '.btn-primary': {
           backgroundColor: theme('backgroundColor.bright-blue.500'),
+          // fontWeight: theme('fontWeight.'),
           '&:hover': {
             backgroundColor: theme('backgroundColor.bright-blue.700'),
             boxShadow: theme('boxShadow.lg')

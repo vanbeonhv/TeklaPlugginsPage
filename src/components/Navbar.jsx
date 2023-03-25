@@ -1,6 +1,7 @@
 import React from 'react';
 import { RxCodesandboxLogo } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
+import Button from './Button';
 const Navbar = () => {
   return (
     <header className='h-17 fixed w-full p-3 bg-white shadow-md z-50'>
@@ -16,6 +17,13 @@ const Navbar = () => {
               </span>
             </div>
           </Link>
+          <div className='ml-4 inline-block'>
+            <img
+              src='https://www.wohhup.com/wp-content/uploads/2021/02/woh-hup.svg'
+              alt=''
+              className='h-14 p-3 inline-block'
+            />
+          </div>
           <div className='ml-4'>
             <img
               src='../src/assets/img/tekla_structures.png'
@@ -40,8 +48,9 @@ const Navbar = () => {
               <li className='p-2 hover:text-black mr-2 inline-block '>about</li>
             </Link>
             <button className='px-5 bg-bright-blue-500 text-white rounded-lg font-medium hover:bg-bright-blue-700 inline-block'>
-              Sign up
+              Login
             </button>
+            {/* <Button btnType='btn-primary'>Login</Button> */}
           </ul>
         </div>
       </nav>

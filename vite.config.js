@@ -12,10 +12,10 @@ export default defineConfig({
   },
   define: {
     'process.env': process.env
+  },
+  resolve: {
+    alias: {
+      src: path.resolve(__dirname, './src')
+    }
   }
-  // resolve: {
-  //   alias: {
-  //     src: path.resolve(__dirname, './src')
-  //   }
-  // }
 });
