@@ -48,7 +48,7 @@ const Navbar = () => {
               <li className='p-2 hover:text-black mr-2 inline-block '>about</li>
             </Link>
             <button className='px-5 bg-bright-blue-500 text-white rounded-lg font-medium hover:bg-bright-blue-700 inline-block'>
-              Login
+              <Link to='/login'>Login</Link>
             </button>
             {/* <Button btnType='btn-primary'>Login</Button> */}
           </ul>

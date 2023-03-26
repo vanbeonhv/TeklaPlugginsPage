@@ -11,9 +11,7 @@ import './index.css';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <Layout>
-        <App />
-      </Layout>
+      <App className='font-openSans' />
     </BrowserRouter>
   </React.StrictMode>
 );
