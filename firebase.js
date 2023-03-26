@@ -2,27 +2,26 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
 import { getAnalytics } from 'firebase/analytics';
-// import.meta.env.REACT_APP_API_KEY;
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const apiKey = import.meta.env.VITE_API_KEY;
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyBQ3AHosYoEkmE - wcCI0JaqRHkvoQvx9qA',
-  authDomain: 'book-manager-719e6.firebaseapp.com',
-  databaseURL:
-    'https://book-manager-719e6-default-rtdb.asia-southeast1.firebasedatabase.app',
-  projectId: 'book-manager-719e6',
-  storageBucket: 'book-manager-719e6.appspot.com',
-  messagingSenderId: '164489247465',
-  appId: '1:164489247465:web:ef23c2e69ab19d28070e78',
-  measurementId: 'G-BWK34TVB4E'
+  apiKey: apiKey,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_DATABASE_URL,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-
 const database = getDatabase(app);
 export default app;

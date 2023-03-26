@@ -5,7 +5,7 @@ import { AiFillLinkedin } from 'react-icons/ai';
 const Footer = () => {
   const year = new Date().getFullYear();
   return (
-    <div className='container h-28 bottom-0'>
+    <div className='h-28 bottom-0'>
       <hr />
       <div className='text-center text-slate-600 h-28 pt-8'>
         <p className='block'>

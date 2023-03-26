@@ -43,7 +43,6 @@ const PluginDetail = () => {
   }, []);
 
   useEffect(() => {
-    console.log(id);
     get(child(dbRef, `pluginDetail/${id}`))
       .then((snapshot) => {
         if (snapshot.exists()) {

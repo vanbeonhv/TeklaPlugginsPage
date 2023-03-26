@@ -9,6 +9,7 @@ import About from './About';
 import SignUp from './SignUp';
 import Login from './Login';
 import LoginLayout from 'src/layouts/LoginLayout';
+import Upload from './Upload';
 
 const useRouteElements = () => {
   const routeElements = useRoutes([
@@ -68,6 +69,14 @@ const useRouteElements = () => {
         <LoginLayout>
           <Login />
         </LoginLayout>
+      )
+    },
+    {
+      path: '/upload',
+      element: (
+        <MainLayout>
+          <Upload />
+        </MainLayout>
       )
     }
   ]);

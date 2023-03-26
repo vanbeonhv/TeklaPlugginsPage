@@ -1,0 +1,30 @@
+{
+  "plugin": {
+    "plugin1": {
+      "name": "revit import",
+      "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae velit inventore quibusdam suscipit nihil labore minus!",
+      "image": "https://ttcso.com/wp-content/uploads/2020/10/revit.jpg",
+      "file": "https://wohhup-my.sharepoint.com/:u:/g/personal/nguyen_huuvan_wohhup_com_vn/Eezo9i0vjNVAjQXyHzGLYCABtqP53KKtlxVdT7XW12w6Qg?e=MFormq",
+      "title": "Import PPVC model from Revit to Tekla",
+      "content": "This is my first blog post",
+      "author": "user1",
+      "timestamp": 1623859200
+    },
+    "plugin2": {
+      "title": "My second blog post",
+      "content": "This is my second blog post",
+      "author": "user2",
+      "timestamp": 1623945600
+    }
+  },
+  "users": {
+    "user1": {
+      "name": "John Doe",
+      "email": "john.doe@example.com"
+    },
+    "user2": {
+      "name": "Jane Doe",
+      "email": "jane.doe@example.com"
+    }
+  }
+}

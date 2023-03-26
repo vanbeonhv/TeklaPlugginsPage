@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { HiDownload } from 'react-icons/hi';
 import { BsArrowRight } from 'react-icons/bs';
+import { ImUpload } from 'react-icons/im';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { getDatabase, ref, child, get } from 'firebase/database';
+import { getDatabase, ref, child, get, set, push } from 'firebase/database';
 import app from '../../firebase';
 import LoadingIcon from '../components/LoadingIcon';
+import { FirebaseError } from 'firebase/app';
+
 const Plugins = () => {
   const [data, setData] = useState('');
+  const db = getDatabase(app);
   const dbRef = ref(getDatabase(app));
   useEffect(() => {
     get(child(dbRef, `plugin`))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          console.log(snapshot.val());
           setData(snapshot.val());
         }
       })
@@ -21,6 +24,33 @@ const Plugins = () => {
         console.error(error);
       });
   }, []);
+  //Upload
+  const handleUpload = () => {
+    const newPost = {
+      name: 'numbering tool',
+      description:
+        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae velit inventore quibusdam suscipit nihil labore minus!',
+      image: 'https://ttcso.com/wp-content/uploads/2020/10/revit.jpg',
+      file: 'https://wohhup-my.sharepoint.com/:u:/g/personal/nguyen_huuvan_wohhup_com_vn/Eezo9i0vjNVAjQXyHzGLYCABtqP53KKtlxVdT7XW12w6Qg?e=MFormq',
+      title: 'Rebar sequense number management tool',
+      content: [
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, nisi cumque debitis mollitia ullam accusantium non, odit eius obcaecati dolorum quidem consequatur hic sequi! Sit est tempora provident iure corrupti?'
+      ],
+      image: [''],
+      tags: ['model'],
+      author: 'phung duy tan'
+    };
+    const newUser = {
+      name: 'marc nguyen',
+      email: 'nguyen_huuvan@wohhup.com.vn',
+      avatar: 'https://i.pravatar.cc/300?img=3',
+      plugin: {
+        '-NRTlczUUBMYCva_YDyT': true
+      },
+      createAt: Date.now()
+    };
+    push(ref(db, 'users'), newUser);
+  };
 
   return (
     <div className='w-full pb-12'>
@@ -83,10 +113,16 @@ const Plugins = () => {
                   <p className=' block'>Loading....</p>
                 </div>
               )}
+
               {/* <div className='text-center inline-block loading'>
                 <LoadingIcon />
                 <p className=' block'>loading....</p>
               </div> */}
+              <div className='fixed right-8 bottom-8 text-3xl text-bright-blue-500 rounded-full bg-bright-blue-100 p-3 cursor-pointer'>
+                <Link to='/upload'>
+                  <ImUpload />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
