@@ -2,6 +2,7 @@ import React from 'react';
 import { BsArrowRightCircleFill } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { HiOutlineDownload } from 'react-icons/hi';
+import { ImUpload } from 'react-icons/im';
 
 const Button = ({ btnType, children, linkTo, iconName, blank }) => {
   const getIcon = (icon) => {
@@ -10,6 +11,9 @@ const Button = ({ btnType, children, linkTo, iconName, blank }) => {
         return <BsArrowRightCircleFill className='inline-block ml-2 mb-1' />;
       case 'download':
         return <HiOutlineDownload className='inline-block ml-2 mb-1' />;
+      case 'upload':
+        return <ImUpload className='inline-block ml-2 mb-1' />;
+
       default:
         break;
     }
