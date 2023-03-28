@@ -18,6 +18,7 @@ module.exports = {
       colors: {
         'bright-blue': {
           100: '#f5f6fe',
+          200: '#c9ccf8 ',
           500: '#4550e6',
           700: '#3740b8'
         }

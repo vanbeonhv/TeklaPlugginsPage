@@ -4,7 +4,15 @@ import { Link } from 'react-router-dom';
 import { HiOutlineDownload } from 'react-icons/hi';
 import { ImUpload } from 'react-icons/im';
 
-const Button = ({ btnType, children, linkTo, iconName, blank }) => {
+const Button = ({
+  btnType,
+  children,
+  linkTo,
+  iconName,
+  blank,
+  onClick,
+  type
+}) => {
   const getIcon = (icon) => {
     switch (icon) {
       case 'link':
@@ -27,6 +35,8 @@ const Button = ({ btnType, children, linkTo, iconName, blank }) => {
     >
       <button
         className={`${btnType} px-5 py-3 mx-2 mt-2 text-white rounded-lg font-bold capitalize block`}
+        onClick={onClick}
+        type={type}
       >
         {children}
         {icon}
