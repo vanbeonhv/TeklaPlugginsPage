@@ -7,16 +7,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { getDatabase, ref, child, get, set, push } from 'firebase/database';
 import app from '../../firebase';
 import LoadingIcon from '../components/LoadingIcon';
-import { FirebaseError } from 'firebase/app';
 
 const Plugins = () => {
-  const [data, setData] = useState('');
+  const [data, setData] = useState(null);
   const db = getDatabase(app);
   const dbRef = ref(getDatabase(app));
   useEffect(() => {
-    get(child(dbRef, `plugin`))
+    get(child(dbRef, 'plugins'))
       .then((snapshot) => {
         if (snapshot.exists()) {
+          console.log(Object.keys(snapshot.val()));
           setData(snapshot.val());
         }
       })
@@ -71,42 +71,45 @@ const Plugins = () => {
           <div className='overview py-5'>
             <div className='grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-4 lg:gap-8 xl:gap-2 md:gap-16 relative'>
               {data ? (
-                data.map((plugin) => (
-                  <div
-                    className='border rounded-2xl p-4 sm:m-8 md:m-8 lg:m-4 shadow-sm hover:shadow-lg h-[454px]'
-                    key={uuidv4()}
-                  >
-                    <div className=' '>
-                      <h5 className=' mb-3 text-2xl font-semibold text-center capitalize cursor-default'>
-                        {plugin.name}
-                      </h5>
-                      <div className='card-text cursor-default min-h-[96px]'>
-                        {plugin.description}
-                      </div>
-                      <img
-                        src={plugin.image}
-                        alt='plugin image'
-                        className='h-52 mx-auto'
-                      />
-
-                      <div className='mt-2 flex p-2 justify-between items-center bottom-5 '>
-                        <div className='text-bright-blue-500 hover:underline '>
-                          <Link to={`/plugins/${plugin.id}`} key={plugin.id}>
-                            <span className='font-medium text-xl'>
-                              Learn more
-                            </span>{' '}
-                            <BsArrowRight className='m-0 inline-block' />
-                          </Link>
+                Object.keys(data).map((key) => {
+                  console.log(data[key].image);
+                  return (
+                    <div
+                      className='border rounded-2xl p-4 sm:m-8 md:m-8 lg:m-4 shadow-sm hover:shadow-lg h-[454px]'
+                      key={uuidv4()}
+                    >
+                      <div className=' '>
+                        <h5 className=' mb-3 text-2xl font-semibold text-center capitalize cursor-default'>
+                          {data[key].name}
+                        </h5>
+                        <div className='card-text cursor-default min-h-[96px]'>
+                          {data[key].description}
                         </div>
-                        <div>
-                          <a href={plugin.file} target='_blank'>
-                            <HiDownload className='text-4xl md:text-5xl border rounded-full p-2 text-bright-blue-500 bg-bright-blue-100  ' />
-                          </a>
+                        <img
+                          src={data[key].thumbnail}
+                          alt='plugin image'
+                          className='h-52 mx-auto'
+                        />
+
+                        <div className='mt-2 flex p-2 justify-between items-center bottom-5 '>
+                          <div className='text-bright-blue-500 hover:underline '>
+                            <Link to={`/plugins/${key}`} key={data[key].id}>
+                              <span className='font-medium text-xl'>
+                                Learn more
+                              </span>
+                              <BsArrowRight className='m-0 inline-block' />
+                            </Link>
+                          </div>
+                          <div>
+                            <a href={data[key].file} target='_blank'>
+                              <HiDownload className='text-4xl md:text-5xl border rounded-full p-2 text-bright-blue-500 bg-bright-blue-100  ' />
+                            </a>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <div className='text-center inline-block'>
                   <LoadingIcon />

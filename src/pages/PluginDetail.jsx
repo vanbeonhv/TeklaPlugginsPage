@@ -6,7 +6,15 @@ import { FiPlus } from 'react-icons/fi';
 import { BsShare } from 'react-icons/bs';
 import { HiOutlineDownload } from 'react-icons/hi';
 import YoutubeEmbed from '../components/YoutubeEmbed';
-import { getDatabase, ref, child, get } from 'firebase/database';
+import {
+  getDatabase,
+  ref,
+  child,
+  get,
+  orderByChild,
+  query,
+  equalTo
+} from 'firebase/database';
 import app from '../../firebase';
 import Button from '../components/Button';
 
@@ -17,9 +25,8 @@ const PluginDetail = () => {
     // likeIcon.classList.toggle('text-red-600');
   };
   const { id } = useParams();
-
   const [pluginDetail, setPluginDetail] = useState('');
-  const [pluginPost, setPluginPost] = useState({
+  const [authorInfo, setAuthorInfo] = useState({
     _id: '',
     author: '',
     avatar: '',
@@ -29,33 +36,39 @@ const PluginDetail = () => {
     image: '',
     tags: ''
   });
+  const db = getDatabase(app);
   const dbRef = ref(getDatabase(app));
   useEffect(() => {
-    get(child(dbRef, `plugin/${id}`))
+    get(child(dbRef, `plugins/${id}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
           setPluginDetail(snapshot.val());
         }
+        return snapshot.val();
       })
+      .then((snapshot) => {
+        const userInfo = query(
+          ref(db, `users`),
+          orderByChild('name'),
+          equalTo(snapshot.author)
+        );
+        return userInfo;
+      })
+
       .catch((error) => {
         console.error(error);
       });
   }, []);
-
   useEffect(() => {
-    get(child(dbRef, `pluginDetail/${id}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          setPluginPost(snapshot.val());
-        }
-      })
-      .catch((error) => {
-        console.error(error, ' from pluginDetail');
-      });
+    const userId = '-NRU-Qx64ipq_ZZCeqQP';
+    get(child(dbRef, `users/${userId}`)).then((snapshot) => {
+      setAuthorInfo(snapshot.val());
+    });
   }, []);
+  const { avatar } = authorInfo;
+  const { author, time, heading, content, image, tags, youtubeId } =
+    pluginDetail;
 
-  const { _id, author, avatar, time, heading, content, image, tags } =
-    pluginPost;
   return (
     <div className='bg-gray-100 pb-16'>
       <div className='p-4 grid grid-cols-12 container'>
@@ -149,9 +162,13 @@ const PluginDetail = () => {
                       })
                     : ''}
                 </ul>
-                <YoutubeEmbed embedId='CnZxamAbSnw' />
               </div>
             </header>
+            <img src='' alt='' />
+            <section>
+              {image ? image.map((img) => <img src={img} alt='' />) : ''}
+              <YoutubeEmbed embedId={youtubeId} />
+            </section>
             <section>
               {content ? (
                 content.map((text) => (
