@@ -10,8 +10,8 @@ import LoadingIcon from '../components/LoadingIcon';
 
 const Plugins = () => {
   const [data, setData] = useState(null);
-  const db = getDatabase(app);
-  const dbRef = ref(getDatabase(app));
+  const db = getDatabase();
+  const dbRef = ref(db);
   useEffect(() => {
     get(child(dbRef, 'plugins'))
       .then((snapshot) => {

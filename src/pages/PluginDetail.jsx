@@ -6,6 +6,7 @@ import { FiPlus } from 'react-icons/fi';
 import { BsShare } from 'react-icons/bs';
 import { HiOutlineDownload } from 'react-icons/hi';
 import YoutubeEmbed from '../components/YoutubeEmbed';
+import app from '../../firebase';
 import {
   getDatabase,
   ref,
@@ -15,7 +16,7 @@ import {
   query,
   equalTo
 } from 'firebase/database';
-import app from '../../firebase';
+
 import Button from '../components/Button';
 
 const PluginDetail = () => {
@@ -26,46 +27,34 @@ const PluginDetail = () => {
   };
   const { id } = useParams();
   const [pluginDetail, setPluginDetail] = useState('');
-  const [authorInfo, setAuthorInfo] = useState({
-    _id: '',
-    author: '',
-    avatar: '',
-    time: '',
-    heading: '',
-    content: '',
-    image: '',
-    tags: ''
-  });
-  const db = getDatabase(app);
-  const dbRef = ref(getDatabase(app));
+  const [authorInfo, setAuthorInfo] = useState({});
+  const db = getDatabase();
+  const dbRef = ref(db);
   useEffect(() => {
     get(child(dbRef, `plugins/${id}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
           setPluginDetail(snapshot.val());
         }
-        return snapshot.val();
-      })
-      .then((snapshot) => {
-        const userInfo = query(
-          ref(db, `users`),
-          orderByChild('name'),
-          equalTo(snapshot.author)
-        );
-        return userInfo;
+        const pluginAuthor = snapshot.val().author;
+
+        get(child(dbRef, 'users')).then((snapshot) => {
+          const users = snapshot.val();
+          for (let user in users) {
+            if (users[user].name === pluginAuthor) {
+              setAuthorInfo(users[user]);
+              break;
+            }
+          }
+        });
       })
 
       .catch((error) => {
         console.error(error);
       });
   }, []);
-  useEffect(() => {
-    const userId = '-NRU-Qx64ipq_ZZCeqQP';
-    get(child(dbRef, `users/${userId}`)).then((snapshot) => {
-      setAuthorInfo(snapshot.val());
-    });
-  }, []);
-  const { avatar } = authorInfo;
+
+  const { avatar, email, position, bio } = authorInfo;
   const { author, time, heading, content, image, tags, youtubeId } =
     pluginDetail;
 
@@ -166,7 +155,9 @@ const PluginDetail = () => {
             </header>
             <img src='' alt='' />
             <section>
-              {image ? image.map((img) => <img src={img} alt='' />) : ''}
+              {image
+                ? image.map((img) => <img src={img} alt='' key={uuidv4()} />)
+                : ''}
               <YoutubeEmbed embedId={youtubeId} />
             </section>
             <section>
@@ -214,20 +205,18 @@ const PluginDetail = () => {
               </button>
             </div>
             <div className='mx-4 mt-2'>
-              <p className='text-sm text-slate-700 pb-4'>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              </p>
+              <p className='text-sm text-slate-700 pb-4'>{bio}</p>
               <div className='pb-4 text-sm text-slate-700'>
                 <h3 className='uppercase text-sm font-semibold '>work</h3>
-                <p className='pt-1'>Bim Designer</p>
+                <p className='pt-1 capitalize'>{position}</p>
               </div>
               <div className='pb-4 text-sm text-slate-700'>
                 <h3 className='uppercase text-sm font-semibold '>contact</h3>
                 <a
-                  className='pt-1 hover:text-bright-blue-700'
-                  href='mailto:nguyen_huuvan@wohhup.com.vn'
+                  className='pt-1 hover:text-bright-blue-700  '
+                  href={`mailto:${email}`}
                 >
-                  Nguyen_huuvan@wohhup.com.vn
+                  <p className='first-letter:uppercase'>{email}</p>
                 </a>
               </div>
             </div>
