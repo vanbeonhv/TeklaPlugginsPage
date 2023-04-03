@@ -6,6 +6,7 @@ import app from '../../firebase';
 import { getDatabase, push, ref } from 'firebase/database';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Dropbox } from 'dropbox';
 
 const Upload = () => {
   const [formData, setFormData] = useState({
@@ -16,8 +17,9 @@ const Upload = () => {
     title: '',
     description: ''
   });
-
+  const [imgURL, setImgURL] = useState(null);
   const [base64Image, setBase64Image] = useState('');
+  const [file, setFile] = useState();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -26,17 +28,55 @@ const Upload = () => {
   };
 
   const handleFile = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setBase64Image(reader.result.split(',')[1]);
-    };
+    setFile(e.target.files[0]);
+    // const reader = new FileReader();
+    // reader.onloadend = () => {
+    //   setBase64Image(reader.result);
+    // };
+    // reader.readAsDataURL(file);
   };
 
   const constraints = {};
 
   const db = getDatabase();
+  const handleUpload = () => {
+    if (file) {
+      // Create an instance of the Dropbox object with your access token
+      const dbx = new Dropbox({
+        accessToken: import.meta.env.VITE_DROPBOX_ACCESS_TOKEN
+      });
+
+      // Upload image file to Dropbox
+      const path = '/' + file.name;
+      dbx
+        .filesUpload({
+          path: path,
+          contents: file
+          // mode: { '.tag': 'add' }
+        })
+        .then((response) => {
+          console.log(response);
+          // Get shared link for uploaded file
+          //   const settings = { requested_visibility: { '.tag': 'public' } };
+          //   dbx
+          //     .sharingCreateSharedLinkWithSettings({
+          //       path: response.path_display,
+          //       settings: settings
+          //     })
+          //     .then((linkResponse) => {
+          //       // Get URL for shared link
+          //       const imgURL = linkResponse.url.replace('?dl=0', '?raw=1');
+          //       setImgURL(imgURL);
+          //     })
+          //     .catch((error) => {
+          //       console.error(error);
+          //     });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
   const hanldePost = () => {
     // setFormData((formData) => ({ ...formData, ['created']: Date.now() }));
     // push(ref(db, 'plugins'), formData)
@@ -47,22 +87,35 @@ const Upload = () => {
     //   .catch(() => {
     //     toast.error('upload false!');
     //   });
+
+    /*
     const uploadImage = async () => {
-      const response = await axios.post('https://api.imgbb.com/1/upload', {
-        params: {
-          key: import.meta.env.VITE_IMGBB_API_KEY,
-          image: base64Image
-        },
-        headers: {
-          Accept: 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          Connection: 'keep-alive',
-          'Content-Type': 'application/json'
-        }
-      });
-      console.log(response.data);
+      // Creating an object of formData
+      const imgFormData = new FormData();
+
+      // Adding our image to formData
+      imgFormData.append('key', import.meta.env.VITE_IMGBB_KEY);
+      imgFormData.append('image', base64Image);
+      try {
+        const response = await axios({
+          //this is config. I will create Axios Instance in the future
+          method: 'post',
+          url: 'https://api.imgbb.com/1/upload',
+          headers: {
+            'Content-Type': 'application/json',
+            //Allow CORS work in react app. But it's useless now. I config it
+            //in firebase. But will be usefull when change backend
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+          },
+          data: formData
+        });
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     };
     uploadImage();
+    */
 
     setFormData({
       author: '',
@@ -143,7 +196,7 @@ const Upload = () => {
           onChange={handleInput}
         />
         <div className='text-center'>
-          <Button type='submit' btnType='btn-primary' onClick={hanldePost}>
+          <Button type='submit' btnType='btn-primary' onClick={handleUpload}>
             Post
           </Button>
           <ToastContainer autoClose={3000} />
