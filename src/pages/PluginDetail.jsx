@@ -153,10 +153,18 @@ const PluginDetail = () => {
                 </ul>
               </div>
             </header>
-            <img src='' alt='' />
             <section>
               {image
-                ? image.map((img) => <img src={img} alt='' key={uuidv4()} />)
+                ? image.map((img) => (
+                    <div className='overflow-hidden'>
+                      <img
+                        src={img}
+                        alt='plugin-guide'
+                        key={uuidv4()}
+                        className='scale-110'
+                      />
+                    </div>
+                  ))
                 : ''}
               <YoutubeEmbed embedId={youtubeId} />
             </section>

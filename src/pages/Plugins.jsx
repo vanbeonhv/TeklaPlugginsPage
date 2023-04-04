@@ -16,7 +16,6 @@ const Plugins = () => {
     get(child(dbRef, 'plugins'))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          console.log(Object.keys(snapshot.val()));
           setData(snapshot.val());
         }
       })
@@ -72,7 +71,6 @@ const Plugins = () => {
             <div className='grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-4 lg:gap-8 xl:gap-2 md:gap-16 relative'>
               {data ? (
                 Object.keys(data).map((key) => {
-                  console.log(data[key].image);
                   return (
                     <div
                       className='border rounded-2xl p-4 sm:m-8 md:m-8 lg:m-4 shadow-sm hover:shadow-lg h-[454px]'

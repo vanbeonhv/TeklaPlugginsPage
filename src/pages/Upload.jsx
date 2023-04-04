@@ -6,7 +6,8 @@ import app from '../../firebase';
 import { getDatabase, push, ref } from 'firebase/database';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Dropbox } from 'dropbox';
+import { HiDownload } from 'react-icons/hi';
+import { BsArrowRight } from 'react-icons/bs';
 
 const Upload = () => {
   const [formData, setFormData] = useState({
@@ -14,115 +15,68 @@ const Upload = () => {
     name: '',
     thumbnail: '',
     file: '',
-    title: '',
-    description: ''
+    description: '',
+    tag: ''
   });
+
   const [imgURL, setImgURL] = useState(null);
   const [base64Image, setBase64Image] = useState('');
-  const [file, setFile] = useState();
+  const [imgFile, setImgFile] = useState();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
     setFormData((formData) => ({ ...formData, [name]: value }));
     return;
   };
-
-  const handleFile = (e) => {
-    setFile(e.target.files[0]);
-    // const reader = new FileReader();
-    // reader.onloadend = () => {
-    //   setBase64Image(reader.result);
-    // };
-    // reader.readAsDataURL(file);
+  let base64String;
+  const handleImage = (e) => {
+    setImgFile(e.target.files[0]);
+    const reader = new FileReader();
+    reader.onload = () => {
+      base64String = reader.result;
+      setBase64Image(base64String);
+      console.log(base64String);
+    };
+    reader.readAsDataURL(e.target.files[0]);
   };
-
-  const constraints = {};
 
   const db = getDatabase();
-  const handleUpload = () => {
-    if (file) {
-      // Create an instance of the Dropbox object with your access token
-      const dbx = new Dropbox({
-        accessToken: import.meta.env.VITE_DROPBOX_ACCESS_TOKEN
-      });
-
-      // Upload image file to Dropbox
-      const path = '/' + file.name;
-      dbx
-        .filesUpload({
-          path: path,
-          contents: file
-          // mode: { '.tag': 'add' }
-        })
-        .then((response) => {
-          console.log(response);
-          // Get shared link for uploaded file
-          //   const settings = { requested_visibility: { '.tag': 'public' } };
-          //   dbx
-          //     .sharingCreateSharedLinkWithSettings({
-          //       path: response.path_display,
-          //       settings: settings
-          //     })
-          //     .then((linkResponse) => {
-          //       // Get URL for shared link
-          //       const imgURL = linkResponse.url.replace('?dl=0', '?raw=1');
-          //       setImgURL(imgURL);
-          //     })
-          //     .catch((error) => {
-          //       console.error(error);
-          //     });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  };
-  const hanldePost = () => {
-    // setFormData((formData) => ({ ...formData, ['created']: Date.now() }));
-    // push(ref(db, 'plugins'), formData)
-    //   .then(() => {
-    //     console.log('upload sucessfully!');
-    //     toast.success('upload sucessfully!');
-    //   })
-    //   .catch(() => {
-    //     toast.error('upload false!');
-    //   });
-
-    /*
+  const handleImageUpload = () => {
+    const imgFormData = new FormData();
+    imgFormData.append('file', file);
+    imgFormData.append('upload_preset', 'zlqfvhpn');
     const uploadImage = async () => {
-      // Creating an object of formData
-      const imgFormData = new FormData();
-
-      // Adding our image to formData
-      imgFormData.append('key', import.meta.env.VITE_IMGBB_KEY);
-      imgFormData.append('image', base64Image);
-      try {
-        const response = await axios({
-          //this is config. I will create Axios Instance in the future
-          method: 'post',
-          url: 'https://api.imgbb.com/1/upload',
-          headers: {
-            'Content-Type': 'application/json',
-            //Allow CORS work in react app. But it's useless now. I config it
-            //in firebase. But will be usefull when change backend
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-          },
-          data: formData
-        });
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
+      const response = await axios({
+        method: 'post',
+        url: 'https://api.cloudinary.com/v1_1/dff6kiqfh/image/upload',
+        data: imgFormData
+      });
+      setFormData((formData) => ({
+        ...formData,
+        thumbnail: response.data.url
+      }));
     };
     uploadImage();
-    */
+  };
+  const handlePost = () => {
+    handleImageUpload();
+    setFormData((formData) => ({ ...formData, ['created']: Date.now() }));
+    console.log(formData);
+
+    push(ref(db, 'plugins'), formData)
+      .then(() => {
+        console.log('upload sucessfully!');
+        toast.success('upload sucessfully!');
+      })
+      .catch(() => {
+        toast.error('upload false!');
+      });
 
     setFormData({
       author: '',
       name: '',
       thumbnail: '',
       file: '',
-      title: '',
       description: ''
     });
   };
@@ -140,7 +94,7 @@ const Upload = () => {
   };
 
   return (
-    <div className='bg-bright-blue-100 h-[calc(100vh-183px)] flex justify-center items-center '>
+    <div className='bg-bright-blue-100 h-[calc(100vh-183px)] flex justify-center items-center gap-10'>
       <form className='w-full max-w-xl px-14 pb-8 pt-10 bg-white rounded-xl shadow-xl max-h-full'>
         <h3 className='text-3xl font-semibold text-center mb-10 text-slate-700 cursor-default'>
           Post your plugin
@@ -168,7 +122,7 @@ const Upload = () => {
           id='plugin-image'
           name='thumbnail'
           label='Plugin Image'
-          onChange={handleFile}
+          onChange={handleImage}
         />
         <Input
           type='text'
@@ -176,14 +130,6 @@ const Upload = () => {
           name='file'
           label="File's link"
           placeholder="File's link"
-          onChange={handleInput}
-        />
-        <Input
-          type='text'
-          id='post-title'
-          name='title'
-          label='Post title'
-          placeholder='Post title'
           onChange={handleInput}
         />
 
@@ -196,12 +142,50 @@ const Upload = () => {
           onChange={handleInput}
         />
         <div className='text-center'>
-          <Button type='submit' btnType='btn-primary' onClick={handleUpload}>
+          <Button type='submit' btnType='btn-primary' onClick={handlePost}>
             Post
           </Button>
           <ToastContainer autoClose={3000} />
         </div>
       </form>
+      <div className='w-full max-w-xl px-14 pb-8 pt-10 bg-white rounded-xl shadow-xl max-h-full'>
+        <h3 className='text-3xl font-semibold text-center mb-7 text-slate-700 cursor-default'>
+          Preview
+        </h3>
+        <div className='border rounded-2xl p-4 sm:m-8 md:m-8 lg:m-4 shadow-sm hover:shadow-lg h-[454px]'>
+          <div className=' '>
+            <h5 className=' mb-3 text-2xl font-semibold text-center capitalize cursor-default'>
+              {formData.name ? formData.name : 'Plugin Name'}
+            </h5>
+            <div className='card-text cursor-default min-h-[96px]'>
+              {formData.description
+                ? formData.description
+                : 'Description .....'}
+            </div>
+            <img
+              src={
+                base64Image
+                  ? base64Image
+                  : 'https://i3.cpcache.com/merchandise/632_550x550_Front_Color-White.jpg?Size=Small-3x3&AttributeValue=NA&region=%7B%22name%22:%22FrontCenter%22,%22width%22:3.25,%22height%22:3.25,%22alignment%22:%22MiddleCenter%22,%22orientation%22:0,%22dpi%22:200,%22crop_x%22:0,%22crop_y%22:0,%22crop_h%22:600,%22crop_w%22:600,%22scale%22:0,%22template%22:%7B%22id%22:102380449,%22params%22:%7B%7D%7D%7D'
+              }
+              alt='plugin image'
+              className='h-52 mx-auto border'
+            />
+          </div>
+
+          <div className='mt-2 flex p-2 justify-between items-center bottom-5 '>
+            <div className='text-bright-blue-500 hover:underline '>
+              <span className='font-medium text-xl cursor-pointer'>
+                Learn more
+              </span>
+              <BsArrowRight className='m-0 inline-block' />
+            </div>
+            <div>
+              <HiDownload className='text-4xl md:text-5xl border rounded-full p-2 text-bright-blue-500 bg-bright-blue-100  ' />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

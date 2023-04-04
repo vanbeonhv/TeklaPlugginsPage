@@ -84,7 +84,8 @@ module.exports = {
           '.container':{
             maxWidth: '1320px'
           }
-      }
+      },
+    
     //   ,
     //   '@media (min-width: 1800px)':{
     //     '.container':{

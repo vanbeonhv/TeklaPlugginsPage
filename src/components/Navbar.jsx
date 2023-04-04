@@ -26,7 +26,7 @@ const Navbar = () => {
           </div>
           <div className='ml-4'>
             <img
-              src='../../src/assets/img/tekla_structures.png'
+              src='https://assets-us-01.kc-usercontent.com/1ca05609-4ad1-009e-bc40-2e1230b16a75/290606c0-4f8a-401b-a70e-434ccc4a36b0/tekla%20structures.png?w=400&h=300&fit=clip'
               alt=''
               className='h-14 '
             />
