@@ -156,13 +156,8 @@ const PluginDetail = () => {
             <section>
               {image
                 ? image.map((img) => (
-                    <div className='overflow-hidden'>
-                      <img
-                        src={img}
-                        alt='plugin-guide'
-                        key={uuidv4()}
-                        className='scale-110'
-                      />
+                    <div className='overflow-hidden' key={uuidv4()}>
+                      <img src={img} alt='plugin-guide' className='scale-110' />
                     </div>
                   ))
                 : ''}

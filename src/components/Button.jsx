@@ -27,16 +27,25 @@ const Button = ({
     }
   };
   const icon = getIcon(iconName);
-  return (
+  return type === 'submit' ? (
+    <div className=''>
+      <button
+        type='submit'
+        className={`${btnType} px-5 py-3 text-white rounded-lg font-bold capitalize block w-full`}
+      >
+        {children}
+      </button>
+    </div>
+  ) : (
     <Link
       to={linkTo}
       className='inline-block'
       target={blank ? '_blank' : '_self'}
     >
       <button
+        type={type}
         className={`${btnType} px-5 py-3 mx-2 mt-2 text-white rounded-lg font-bold capitalize block`}
         onClick={onClick}
-        type={type}
       >
         {children}
         {icon}

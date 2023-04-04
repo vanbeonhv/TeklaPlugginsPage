@@ -3,10 +3,27 @@ import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import { MdFastForward } from 'react-icons/md';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useEffect } from 'react';
 
 function LandingPage() {
+  const auth = getAuth();
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        toast(`Hi ${user.displayName || 'bro!'}, welcome back!`);
+        console.log(user);
+      } else {
+        console.log('user signed out!');
+      }
+    });
+  }, []);
+
   return (
-    <main className='pt-12 w-full '>
+    <main className='pt-12 w-full  '>
       <section className='container'>
         <div className='grid md:grid-cols-2 sm:grid-cols-1'>
           <div className='w-full '>
@@ -79,6 +96,7 @@ function LandingPage() {
           </div>
         </div>
       </section>
+      <ToastContainer />
     </main>
   );
 }

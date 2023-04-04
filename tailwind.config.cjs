@@ -31,6 +31,7 @@ module.exports = {
     }
   },
   plugins: [
+    require('tailwind-scrollbar'),
     plugin(function ({ addComponents, theme }) {
       addComponents({
         '.btn-primary': {

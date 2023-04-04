@@ -35,7 +35,6 @@ const Upload = () => {
     reader.onload = () => {
       base64String = reader.result;
       setBase64Image(base64String);
-      console.log(base64String);
     };
     reader.readAsDataURL(e.target.files[0]);
   };
@@ -43,7 +42,7 @@ const Upload = () => {
   const db = getDatabase();
   const handleImageUpload = () => {
     const imgFormData = new FormData();
-    imgFormData.append('file', file);
+    imgFormData.append('file', imgFile);
     imgFormData.append('upload_preset', 'zlqfvhpn');
     const uploadImage = async () => {
       const response = await axios({
@@ -51,6 +50,7 @@ const Upload = () => {
         url: 'https://api.cloudinary.com/v1_1/dff6kiqfh/image/upload',
         data: imgFormData
       });
+      console.log(response.data);
       setFormData((formData) => ({
         ...formData,
         thumbnail: response.data.url
@@ -61,11 +61,9 @@ const Upload = () => {
   const handlePost = () => {
     handleImageUpload();
     setFormData((formData) => ({ ...formData, ['created']: Date.now() }));
-    console.log(formData);
 
     push(ref(db, 'plugins'), formData)
       .then(() => {
-        console.log('upload sucessfully!');
         toast.success('upload sucessfully!');
       })
       .catch(() => {
