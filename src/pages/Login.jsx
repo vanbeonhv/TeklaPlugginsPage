@@ -12,6 +12,9 @@ import {
   signInWithEmailAndPassword
 } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
+import { RxCodesandboxLogo } from 'react-icons/rx';
+import { BsGithub } from 'react-icons/bs';
+import { FcGoogle } from 'react-icons/fc';
 
 const schema = yup.object({
   email: yup
@@ -51,7 +54,14 @@ const Login = () => {
       });
   };
   return (
-    <div className='flex justify-center items-center bg-bright-blue-100 h-[calc(100vh-112px)]'>
+    <div className='flex justify-center items-center flex-col bg-bright-blue-100 h-[calc(100vh-112px)]'>
+      <div className='flex items-center pb-6'>
+        <RxCodesandboxLogo className='text-4xl text-bright-blue-500 m-2' />
+        <span className='text-3xl font-bold text-gray-800'>
+          Marc
+          <span className='font-extralight text-gray-600'>Pro</span>
+        </span>
+      </div>
       <form
         className='w-full max-w-xl px-14 pb-8 pt-10 bg-white rounded-xl shadow-xl max-h-full'
         onSubmit={handleSubmit(onSubmit)}
@@ -59,45 +69,73 @@ const Login = () => {
         <h3 className='text-3xl font-semibold text-center mb-10 text-slate-700 cursor-default'>
           Login
         </h3>
-        <input
-          type='email'
-          name='email'
-          className='border border-bright-blue-200 focus:border-bright-blue-500 focus:shadow-md outline-none p-2 mb-1  rounded-lg duration-150 w-full'
-          placeholder='Email'
-          {...register('email', { required: true })}
-        />
-        <p className='min-h-[1rem] text-red-500 italic pl-2'>
-          {errors.email?.message}
-        </p>
-        <input
-          type='password'
-          name='password'
-          className='border border-bright-blue-200 focus:border-bright-blue-500 focus:shadow-md outline-none p-2 mt-1 rounded-lg duration-150 w-full'
-          placeholder='Password'
-          {...register('password', { required: true })}
-        />
-        <p className='min-h-[1rem] text-red-500 italic pl-2'>
-          {errors.password?.message}
-        </p>
-        <div className='flex justify-between text-xd'>
-          <div className=''>
-            <input
-              type='checkbox'
-              name='remember-password'
-              id='remember-password'
-              className='inline-block'
-            />
-            <p className='inline-block leading-5 pl-2'>remenber me</p>
-          </div>
-          <div className=''>Forgot password</div>
+
+        <button
+          type='button'
+          className='w-full border px-5 py-3 border-bright-blue-200 rounded-lg font-semibold text-lg text-slate-600 flex items-center justify-center gap-2 mt-4 hover:shadow-md'
+          onClick={() => console.log('login')}
+        >
+          <FcGoogle className='text-2xl' />
+          Sign in with Google
+        </button>
+        <button
+          type='button'
+          className='w-full border px-5 py-3 border-bright-blue-200 rounded-lg font-semibold text-lg text-slate-600 flex items-center justify-center gap-2 mt-4 hover:shadow-md'
+          onClick={() => console.log('login')}
+        >
+          <BsGithub className='text-2xl' />
+          Sign in with Github
+        </button>
+        <div className='relative my-12 border-b border-bright-blue-300'>
+          <span className='absolute top-[-12px] left-[45%] bg-white px-2 inline-block font-semibold text-slate-500'>
+            OR
+          </span>
         </div>
-        <div className='text-center pt-4'>
+        <div className=''>
+          <input
+            type='email'
+            name='email'
+            className='border border-bright-blue-200 focus:border-bright-blue-500 focus:shadow-md outline-none p-2 mb-1  rounded-lg duration-150 w-full'
+            placeholder='Email'
+            {...register('email', { required: true })}
+          />
+          <p className='min-h-[1rem] text-red-500 italic pl-2'>
+            {errors.email?.message}
+          </p>
+          <input
+            type='password'
+            name='password'
+            className='border border-bright-blue-200 focus:border-bright-blue-500 focus:shadow-md outline-none p-2 mt-1 rounded-lg duration-150 w-full'
+            placeholder='Password'
+            {...register('password', { required: true })}
+          />
+          <p className='min-h-[1rem] text-red-500 italic pl-2'>
+            {errors.password?.message}
+          </p>
+          <div className='flex justify-between items-center text-sm text-slate-500 py-2 '>
+            <div className='flex flex-row-reverse'>
+              <label className=' leading-5 pl-2' forhtml='remember-password'>
+                Remenber me
+              </label>
+              <input
+                type='checkbox'
+                name='remember-password'
+                id='remember-password'
+                className='"'
+              />
+            </div>
+            <div className='underline cursor-pointer hover:text-slate-800 '>
+              Forgot password?
+            </div>
+          </div>
+        </div>
+        <div className='text-center pt-4 text-lg'>
           <Button type='submit' btnType='btn-primary'>
             Login
           </Button>
-          <p className='pt-12 text-md'>
+          <p className='pt-12 text-slate-700'>
             No Account? Sign up
-            <Link to={'/signup'} className='pl-1 text-bright-blue-500'>
+            <Link to={'/signup'} className='pl-1 text-bright-blue-700'>
               Here.
             </Link>
           </p>
