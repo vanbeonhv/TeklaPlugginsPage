@@ -8,13 +8,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import app from '../../firebase';
 import {
   getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup
 } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import { RxCodesandboxLogo } from 'react-icons/rx';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
+import { FirebaseError } from 'firebase/app';
 
 const schema = yup.object({
   email: yup
@@ -28,6 +30,7 @@ const schema = yup.object({
     .max(24, 'Passowrd from 6-24 character')
 });
 const Login = () => {
+  let navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -36,7 +39,27 @@ const Login = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const auth = getAuth(app);
-  let navigate = useNavigate();
+  auth.useDeviceLanguage();
+  const provider = new GoogleAuthProvider();
+  provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+
+  const handleGoogleLogin = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // IdP data available using getAdditionalUserInfo(result)
+      })
+      .catch((error) => {
+        toast.error('Invalid username/password!', {
+          position: toast.POSITION.TOP_CENTER
+        });
+        console.log(`error ${error.code}: ${error.message}`);
+      });
+  };
   const onSubmit = (data) => {
     const { email, password } = data;
     signInWithEmailAndPassword(auth, email, password)
@@ -45,12 +68,10 @@ const Login = () => {
         navigate('/');
       })
       .catch((error) => {
-        console.log(
-          'errorCode: ',
-          error.code,
-          ' errorMessage: ',
-          error.message
-        );
+        toast.error('Invalid username/password!', {
+          position: toast.POSITION.TOP_CENTER
+        });
+        console.log(`error ${error.code}: ${error.message}`);
       });
   };
   return (
@@ -73,7 +94,7 @@ const Login = () => {
         <button
           type='button'
           className='w-full border px-5 py-3 border-bright-blue-200 rounded-lg font-semibold text-lg text-slate-600 flex items-center justify-center gap-2 mt-4 hover:shadow-md'
-          onClick={() => console.log('login')}
+          onClick={handleGoogleLogin}
         >
           <FcGoogle className='text-2xl' />
           Sign in with Google
@@ -140,7 +161,7 @@ const Login = () => {
             </Link>
           </p>
         </div>
-        <ToastContainer autoClose={3000} />
+        <ToastContainer autoClose={3000} theme='colored' pauseOnHover='false' />
       </form>
     </div>
   );

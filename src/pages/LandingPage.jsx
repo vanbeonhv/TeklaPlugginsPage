@@ -96,7 +96,7 @@ function LandingPage() {
           </div>
         </div>
       </section>
-      <ToastContainer />
+      <ToastContainer autoClose='1000' />
     </main>
   );
 }
