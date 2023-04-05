@@ -10,6 +10,7 @@ import SignUp from './SignUp';
 import Login from './Login';
 import LoginLayout from 'src/layouts/LoginLayout';
 import Upload from './Upload';
+import Policy from './Policy';
 
 const useRouteElements = () => {
   const routeElements = useRoutes([
@@ -76,6 +77,15 @@ const useRouteElements = () => {
       element: (
         <MainLayout>
           <Upload />
+        </MainLayout>
+      )
+    },
+
+    {
+      path: '/policy',
+      element: (
+        <MainLayout>
+          <Policy />
         </MainLayout>
       )
     }
