@@ -11,6 +11,7 @@ import Login from './Login';
 import LoginLayout from 'src/layouts/LoginLayout';
 import Upload from './Upload';
 import Policy from './Policy';
+import TermOfService from './TermOfService';
 
 const useRouteElements = () => {
   const routeElements = useRoutes([
@@ -86,6 +87,14 @@ const useRouteElements = () => {
       element: (
         <MainLayout>
           <Policy />
+        </MainLayout>
+      )
+    },
+    {
+      path: '/termofservice',
+      element: (
+        <MainLayout>
+          <TermOfService />
         </MainLayout>
       )
     }

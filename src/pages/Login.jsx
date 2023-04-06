@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import app from '../../firebase';
 import {
   getAuth,
+  GithubAuthProvider,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup
@@ -40,18 +41,47 @@ const Login = () => {
 
   const auth = getAuth(app);
   auth.useDeviceLanguage();
-  const provider = new GoogleAuthProvider();
-  provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  const googleProvider = new GoogleAuthProvider();
+  googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  const gitHubProvider = new GithubAuthProvider();
+  gitHubProvider.addScope('repo');
+  gitHubProvider.setCustomParameters({
+    allow_signup: 'false'
+  });
 
-  const handleGoogleLogin = () => {
-    signInWithPopup(auth, provider)
+  const handleGithubLogin = () => {
+    signInWithPopup(auth, gitHubProvider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
+        // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+        const credential = GithubAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
+
         // The signed-in user info.
         const user = result.user;
+        console.log(user);
+        navigate('/');
         // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      })
+      .catch((error) => {
+        toast.error('Invalid username/password!', {
+          position: toast.POSITION.TOP_CENTER
+        });
+        console.log(`error ${error.code}: ${error.message}`);
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GithubAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
+  const handleGoogleLogin = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((data) => {
+        // The signed-in user info.
+        const user = data.user;
+        // IdP data available using getAdditionalUserInfo(result)
+        navigate('/');
       })
       .catch((error) => {
         toast.error('Invalid username/password!', {
@@ -65,6 +95,7 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+        console.log(user);
         navigate('/');
       })
       .catch((error) => {
@@ -102,7 +133,7 @@ const Login = () => {
         <button
           type='button'
           className='w-full border px-5 py-3 border-bright-blue-200 rounded-lg font-semibold text-lg text-slate-600 flex items-center justify-center gap-2 mt-4 hover:shadow-md'
-          onClick={() => console.log('login')}
+          onClick={handleGithubLogin}
         >
           <BsGithub className='text-2xl' />
           Sign in with Github
