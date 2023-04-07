@@ -194,6 +194,7 @@ const Login = () => {
         </div>
         <ToastContainer autoClose={3000} theme='colored' pauseOnHover='false' />
       </form>
+      <div></div>
     </div>
   );
 };
