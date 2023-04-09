@@ -6,20 +6,48 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
+import { child, get, getDatabase, ref } from 'firebase/database';
+import { DiCodeigniter } from 'react-icons/di';
+
+const Msg = ({ closeToast, toastProps, userData }) => (
+  <p>
+    Hi{' '}
+    <span className='text-bright-blue-500 font-medium capitalize'>
+      {userData ? userData.name : 'bro!'}
+    </span>
+    <DiCodeigniter className='inline-block pb-2 fill-orange-600 text-lg' />,
+    welcome back!
+  </p>
+);
 
 function LandingPage() {
   const auth = getAuth();
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       const uid = user.uid;
-  //       toast(`Hi ${user.displayName || 'bro!'}, welcome back!`);
-  //       console.log(user);
-  //     } else {
-  //       console.log('user signed out!');
-  //     }
-  //   });
-  // }, []);
+  const dbRef = ref(getDatabase());
+  const getUserFromDb = async () => {
+    try {
+      const response = await get(child(dbRef, 'users'));
+      if (response.exists()) {
+        const userData = response.val();
+        return userData;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const uid = user.uid;
+        const userDataList = await getUserFromDb();
+        const userIdList = Object.keys(userDataList);
+        const userId = userIdList.filter((userId) => userId === uid);
+        const userData = userDataList[userId];
+        toast(<Msg userData={userData} />);
+      } else {
+        console.log('user signed out!');
+      }
+    });
+  }, []);
 
   return (
     <main className='pt-12 w-full  '>
@@ -95,15 +123,7 @@ function LandingPage() {
           </div>
         </div>
       </section>
-      <ToastContainer autoClose='1000' />
-      <section className='flex justify-center items-center gap-4 py-8'>
-        <div className='pt-8 text-bright-blue-500 underline font-medium'>
-          <Link to='/policy'>Policy</Link>
-        </div>
-        <div className=' pt-8 text-bright-blue-500 underline font-medium'>
-          <Link to='/termofservice'>Term of service</Link>
-        </div>
-      </section>
+      <ToastContainer autoClose='1500' />
     </main>
   );
 }

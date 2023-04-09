@@ -6,8 +6,9 @@ import app from '../../firebase';
 import { getDatabase, push, ref } from 'firebase/database';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { HiDownload } from 'react-icons/hi';
+import { HiDownload, HiOutlineDocumentAdd } from 'react-icons/hi';
 import { BsArrowRight } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 const Upload = () => {
   const [formData, setFormData] = useState({
@@ -183,6 +184,11 @@ const Upload = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className='fixed right-8 bottom-[120px] text-3xl text-bright-blue-500 rounded-full bg-white p-3 cursor-pointer hover:shadow-lg'>
+        <Link to='/post-upload'>
+          <HiOutlineDocumentAdd />
+        </Link>
       </div>
     </div>
   );

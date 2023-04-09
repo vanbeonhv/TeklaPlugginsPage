@@ -52,16 +52,9 @@ const Login = () => {
   const handleGithubLogin = () => {
     signInWithPopup(auth, gitHubProvider)
       .then((result) => {
-        // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-        const credential = GithubAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-
-        // The signed-in user info.
         const user = result.user;
         console.log(user);
         navigate('/');
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
       })
       .catch((error) => {
         toast.error('Invalid username/password!', {

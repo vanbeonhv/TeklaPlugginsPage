@@ -12,6 +12,7 @@ import LoginLayout from 'src/layouts/LoginLayout';
 import Upload from './Upload';
 import Policy from './Policy';
 import TermOfService from './TermOfService';
+import PostUpload from './PostUpload';
 
 const useRouteElements = () => {
   const routeElements = useRoutes([
@@ -95,6 +96,14 @@ const useRouteElements = () => {
       element: (
         <MainLayout>
           <TermOfService />
+        </MainLayout>
+      )
+    },
+    {
+      path: '/post-upload',
+      element: (
+        <MainLayout>
+          <PostUpload />
         </MainLayout>
       )
     }
