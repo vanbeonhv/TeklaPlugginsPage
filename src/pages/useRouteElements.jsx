@@ -13,6 +13,7 @@ import Upload from './Upload';
 import Policy from './Policy';
 import TermOfService from './TermOfService';
 import PostUpload from './PostUpload';
+import NewAccount from './NewAccount';
 
 const useRouteElements = () => {
   const routeElements = useRoutes([
@@ -61,9 +62,9 @@ const useRouteElements = () => {
     {
       path: '/signup',
       element: (
-        <MainLayout>
+        <LoginLayout>
           <SignUp />
-        </MainLayout>
+        </LoginLayout>
       )
     },
     {
@@ -105,6 +106,14 @@ const useRouteElements = () => {
         <MainLayout>
           <PostUpload />
         </MainLayout>
+      )
+    },
+    {
+      path: '/new-account',
+      element: (
+        <LoginLayout>
+          <NewAccount />
+        </LoginLayout>
       )
     }
   ]);

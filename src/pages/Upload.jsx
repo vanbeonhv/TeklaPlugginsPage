@@ -9,6 +9,30 @@ import 'react-toastify/dist/ReactToastify.css';
 import { HiDownload, HiOutlineDocumentAdd } from 'react-icons/hi';
 import { BsArrowRight } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import InputForm from 'src/components/InputForm';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+const schema = yup.object({
+  displayName: yup
+    .string()
+    .required('Display name from 6-24 character')
+    .min(6, 'Display name from 6-24 character')
+    .max(24, 'Display name from 6-24 character'),
+
+  avatar: yup
+    .string()
+    .required('Avatar from 6-24 character')
+    .min(6, 'Avatar from 6-24 character')
+    .max(24, 'Avatar from 6-24 character'),
+
+  position: yup
+    .string()
+    .required('Position from 6-24 character')
+    .min(6, 'Position from 6-24 character')
+    .max(24, 'Position from 6-24 character')
+});
 
 const Upload = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +44,14 @@ const Upload = () => {
     tag: ''
   });
 
-  const [imgURL, setImgURL] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(schema)
+  });
+
   const [base64Image, setBase64Image] = useState('');
   const [imgFile, setImgFile] = useState();
 
@@ -80,6 +111,10 @@ const Upload = () => {
     });
   };
 
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   const handleUser = () => {
     const user = {
       avatar: 'https://i.pravatar.cc/300?img=30',
@@ -94,18 +129,20 @@ const Upload = () => {
 
   return (
     <div className='bg-bright-blue-100 h-[calc(100vh-183px)] flex justify-center items-center gap-10'>
-      <form className='w-full max-w-xl px-14 pb-8 pt-10 bg-white rounded-xl shadow-xl max-h-full'>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className='w-full max-w-xl px-14 pb-8 pt-10 bg-white rounded-xl shadow-xl max-h-full'
+      >
         <h3 className='text-3xl font-semibold text-center mb-10 text-slate-700 cursor-default'>
           Post your plugin
         </h3>
-        <Input
+        <InputForm
           type='text'
-          id='user'
-          label='User'
           name='author'
           placeholder='Author name'
+          register={register}
           onChange={handleInput}
-          required
+          errorsMessage={errors.author?.message}
         />
 
         <Input
@@ -141,7 +178,7 @@ const Upload = () => {
           onChange={handleInput}
         />
         <div className='text-center'>
-          <Button type='submit' btnType='btn-primary' onClick={handlePost}>
+          <Button type='submit' btnType='btn-primary'>
             Post
           </Button>
           <ToastContainer autoClose={3000} />

@@ -93,12 +93,12 @@ const Policy = () => {
         We may update this Privacy Policy from time to time. If we make material
         changes to this policy, we will notify you by email or by posting a
         notice on our website or within the app.
-        <div className='text-right pt-8 text-bright-blue-500 underline font-medium'>
-          <Link to='/termofservice'>
-            Term of service <BsArrowRight className='inline-block' />
-          </Link>
-        </div>
       </p>
+      <div className='text-right pt-8 text-bright-blue-500 underline font-medium'>
+        <Link to='/termofservice'>
+          Term of service <BsArrowRight className='inline-block' />
+        </Link>
+      </div>
     </div>
   );
 };

@@ -30,6 +30,7 @@ const PluginDetail = () => {
   const [authorInfo, setAuthorInfo] = useState({});
   const db = getDatabase();
   const dbRef = ref(db);
+
   useEffect(() => {
     get(child(dbRef, `plugins/${id}`))
       .then((snapshot) => {
@@ -154,16 +155,6 @@ const PluginDetail = () => {
               </div>
             </header>
             <section>
-              {image
-                ? image.map((img) => (
-                    <div className='overflow-hidden' key={uuidv4()}>
-                      <img src={img} alt='plugin-guide' className='scale-110' />
-                    </div>
-                  ))
-                : ''}
-              <YoutubeEmbed embedId={youtubeId} />
-            </section>
-            <section>
               {content ? (
                 content.map((text) => (
                   <p key={uuidv4()} className='py-4'>
@@ -174,6 +165,17 @@ const PluginDetail = () => {
                 <p>Loading...</p>
               )}
             </section>
+            <section>
+              {/* {image
+                ? image.map((img) => (
+                    <div className='overflow-hidden' key={uuidv4()}>
+                      <img src={img} alt='plugin-guide' className='scale-110' />
+                    </div>
+                  ))
+                : ''} */}
+              <YoutubeEmbed embedId={youtubeId} />
+            </section>
+
             <div className='text-center'>
               <Button
                 btnType='btn-primary'

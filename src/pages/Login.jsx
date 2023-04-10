@@ -17,7 +17,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { RxCodesandboxLogo } from 'react-icons/rx';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
-import { FirebaseError } from 'firebase/app';
 
 const schema = yup.object({
   email: yup
@@ -100,13 +99,15 @@ const Login = () => {
   };
   return (
     <div className='flex justify-center items-center flex-col bg-bright-blue-100 h-[calc(100vh-112px)]'>
-      <div className='flex items-center pb-6'>
-        <RxCodesandboxLogo className='text-4xl text-bright-blue-500 m-2' />
-        <span className='text-3xl font-bold text-gray-800'>
-          Marc
-          <span className='font-extralight text-gray-600'>Pro</span>
-        </span>
-      </div>
+      <Link to='/'>
+        <div className='flex items-center pb-6'>
+          <RxCodesandboxLogo className='text-4xl text-bright-blue-500 m-2' />
+          <span className='text-3xl font-bold text-gray-800'>
+            Marc
+            <span className='font-extralight text-gray-600'>Pro</span>
+          </span>
+        </div>
+      </Link>
       <form
         className='w-full max-w-xl px-14 pb-8 pt-10 bg-white rounded-xl shadow-xl max-h-full'
         onSubmit={handleSubmit(onSubmit)}
