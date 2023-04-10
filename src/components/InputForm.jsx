@@ -17,7 +17,9 @@ const InputForm = ({
             name={name}
             className='border border-bright-blue-200 focus:border-bright-blue-500 focus:shadow-md outline-none p-2 my-1  rounded-lg duration-150 w-full'
             placeholder={placeholder}
-            {...register(name)}
+            {...register(name, {
+              onChange: onChange
+            })}
           />
 
           <p className='min-h-[1rem] text-red-500 italic pl-2'>
@@ -33,7 +35,11 @@ const InputForm = ({
             name={name}
             className='border border-bright-blue-200 focus:border-bright-blue-500 focus:shadow-md outline-none p-2 my-1  rounded-lg duration-150 w-full'
             placeholder={placeholder}
-            {...register(name)}
+            {...register(name, {
+              onChange: onChange
+            })}
+            cols='58'
+            rows='5'
           />
 
           <p className='min-h-[1rem] text-red-500 italic pl-2'>

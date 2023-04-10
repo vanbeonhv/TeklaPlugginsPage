@@ -47,8 +47,6 @@ const Input = ({
     case 'textarea':
       return (
         <div className='pt-1'>
-          {/* <label htmlFor={id}>{label}</label>
-          <br /> */}
           <textarea
             name={name}
             id={id}

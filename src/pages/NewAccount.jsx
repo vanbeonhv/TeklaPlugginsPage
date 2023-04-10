@@ -50,6 +50,9 @@ const NewAccount = () => {
     console.log(data);
   };
 
+  const handleInput = () => {
+    console.log('test');
+  };
   return (
     <div className='flex justify-center items-center flex-col bg-bright-blue-100 h-[calc(100vh-112px)]'>
       <form

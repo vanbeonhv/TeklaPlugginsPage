@@ -58,14 +58,13 @@ const Upload = () => {
   const handleInput = (e) => {
     const { name, value } = e.target;
     setFormData((formData) => ({ ...formData, [name]: value }));
-    return;
   };
-  let base64String;
+
   const handleImage = (e) => {
     setImgFile(e.target.files[0]);
     const reader = new FileReader();
     reader.onload = () => {
-      base64String = reader.result;
+      const base64String = reader.result;
       setBase64Image(base64String);
     };
     reader.readAsDataURL(e.target.files[0]);
@@ -115,18 +114,6 @@ const Upload = () => {
     console.log(data);
   };
 
-  const handleUser = () => {
-    const user = {
-      avatar: 'https://i.pravatar.cc/300?img=30',
-      email: 'phung_duytan@wohhup.com.vn',
-      name: 'phung duy tan',
-      plugin: {}
-    };
-    push(ref(db, 'users'), { ...user, ['created']: Date.now() }).then(() => {
-      console.log('uploaded');
-    });
-  };
-
   return (
     <div className='bg-bright-blue-100 h-[calc(100vh-183px)] flex justify-center items-center gap-10'>
       <form
@@ -141,42 +128,42 @@ const Upload = () => {
           name='author'
           placeholder='Author name'
           register={register}
-          onChange={handleInput}
           errorsMessage={errors.author?.message}
-        />
-
-        <Input
-          type='text'
-          id='plugin-name'
-          name='name'
-          label={`Plugin's name`}
-          placeholder="Plugin's name"
           onChange={handleInput}
         />
-        <Input
+        <InputForm
+          type='text'
+          name='name'
+          placeholder="Plugin's name"
+          register={register}
+          errorsMessage={errors.name?.message}
+          onChange={handleInput}
+        />
+        <InputForm
           type='file'
-          id='plugin-image'
           name='thumbnail'
-          label='Plugin Image'
+          placeholder="Plugin's name"
+          register={register}
+          errorsMessage={errors.thumbnail?.message}
           onChange={handleImage}
         />
-        <Input
+        <InputForm
           type='text'
-          id='file-link'
           name='file'
-          label="File's link"
           placeholder="File's link"
+          register={register}
+          errorsMessage={errors.file?.message}
+          onChange={handleInput}
+        />
+        <InputForm
+          type='textarea'
+          name='description'
+          placeholder='Description'
+          register={register}
+          errorsMessage={errors.description?.message}
           onChange={handleInput}
         />
 
-        <Input
-          type='textarea'
-          id='description'
-          name='description'
-          label='Description'
-          placeholder='Description'
-          onChange={handleInput}
-        />
         <div className='text-center'>
           <Button type='submit' btnType='btn-primary'>
             Post
@@ -184,7 +171,7 @@ const Upload = () => {
           <ToastContainer autoClose={3000} />
         </div>
       </form>
-      <div className='w-full max-w-xl px-14 pb-8 pt-10 bg-white rounded-xl shadow-xl max-h-full'>
+      <div className='w-full max-w-lg px-14 pb-8 pt-10 bg-white rounded-xl shadow-xl max-h-full'>
         <h3 className='text-3xl font-semibold text-center mb-7 text-slate-700 cursor-default'>
           Preview
         </h3>
