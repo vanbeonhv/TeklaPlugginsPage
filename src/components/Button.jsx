@@ -38,7 +38,7 @@ const Button = ({
         >
           <button
             type={type}
-            className={`${btnType} px-5 py-3 mx-2 mt-2 text-white rounded-lg font-bold capitalize block`}
+            className={`${btnType} px-5 py-3 mx-2 mt-2 text-white rounded-lg font-semibold capitalize block`}
             onClick={onClick}
           >
             {children}
@@ -52,7 +52,7 @@ const Button = ({
         <div className=''>
           <button
             type='submit'
-            className={`${btnType} px-5 py-3 text-white rounded-lg font-bold capitalize block w-full`}
+            className={`${btnType} px-5 py-3 text-white rounded-lg font-semibold capitalize block w-full`}
           >
             {children}
           </button>
