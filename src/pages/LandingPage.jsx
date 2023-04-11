@@ -5,9 +5,11 @@ import Card from '../components/Card';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { child, get, getDatabase, ref } from 'firebase/database';
 import { DiCodeigniter } from 'react-icons/di';
+
+const loginBtn = document.querySelector('.login-button');
 
 const Msg = ({ closeToast, toastProps, userData }) => (
   <p>
@@ -34,9 +36,16 @@ function LandingPage() {
       console.log(error);
     }
   };
+
+  const [user, setUser] = useState();
+
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        setUser(user);
+        // loginBtn.classList.add('hidden');
+        console.log('user:', user);
+
         const uid = user.uid;
         const userDataList = await getUserFromDb();
         const userIdList = Object.keys(userDataList);
@@ -68,12 +77,14 @@ function LandingPage() {
             </p>
             <div className='mt-5 '>
               <Button
+                type='button'
                 btnType='btn-primary'
                 linkTo='/plugins'
                 children='Download plugins'
                 iconName='link'
               />
               <Button
+                type='button'
                 btnType='btn-secondary'
                 linkTo=''
                 children='How to install?'

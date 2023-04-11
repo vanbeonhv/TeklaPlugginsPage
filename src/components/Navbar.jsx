@@ -2,10 +2,13 @@ import React from 'react';
 import { RxCodesandboxLogo } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 import Button from './Button';
+import { BsBell } from 'react-icons/bs';
+
 const Navbar = () => {
+  const user = true;
   return (
     <header className='h-17 fixed w-full p-3 bg-white shadow-md z-50'>
-      <nav className=' flex justify-between items-center relative top-[-5px]'>
+      <nav className=' flex justify-between items-center h-full'>
         <div className='flex'>
           <Link to='/'>
             <div className='site-logo flex items-center'>
@@ -32,25 +35,41 @@ const Navbar = () => {
             />
           </div>
         </div>
-        <div>
-          <ul className='flex text-lg text-gray-600 capitalize cursor-pointer font-medium'>
-            <Link to='/plugins'>
-              <li className='p-2 hover:text-black mr-2 inline-block'>
-                plugins
+        <div className='h-full'>
+          <ul className='flex flex-endtext-lg text-gray-600 capitalize cursor-pointer font-medium h-full text-xl'>
+            <li className='p-2 hover:text-black mr-2 inline-block'>
+              <Link to='/plugins'>plugins</Link>
+            </li>
+            <li className='p-2 hover:text-black mr-2 inline-block'>
+              <Link to='/pricing'>pricing</Link>
+            </li>
+            <li className='p-2 hover:text-black mr-2 inline-block '>
+              <Link to='/about'>about</Link>
+            </li>
+            {user ? (
+              <li className='flex items-center gap-3 text-2xl'>
+                <div className='p-2 pt-3 hover:bg-bright-blue-125 hover:text-bright-blue-500 rounded-lg relative h-12'>
+                  <BsBell />
+                  <div className='absolute top-10 right-0 border-bright-blue-200 rounded-md bg-white border'>
+                    <p>test</p>
+                  </div>
+                </div>
+                <div className='h-full relative'>
+                  <img
+                    src='https://api.multiavatar.com/default.png'
+                    alt='avatar'
+                    className='max-h-full w-auto border-2 border-bright-blue-100 hover:border-bright-blue-300  rounded-full '
+                  />
+                  <div className='absolute top-10 right-0 border-bright-blue-200 rounded-md bg-white border'>
+                    <p>test</p>
+                  </div>
+                </div>
               </li>
-            </Link>
-            <Link to='/pricing'>
-              <li className='p-2 hover:text-black mr-2 inline-block'>
-                pricing
-              </li>
-            </Link>
-            <Link to='/about'>
-              <li className='p-2 hover:text-black mr-2 inline-block '>about</li>
-            </Link>
-            <button className='px-5 bg-bright-blue-500 text-white rounded-lg font-medium hover:bg-bright-blue-700 inline-block'>
-              <Link to='/login'>Login</Link>
-            </button>
-            {/* <Button btnType='btn-primary'>Login</Button> */}
+            ) : (
+              <Button type='login-button' linkTo='/login'>
+                Login
+              </Button>
+            )}
           </ul>
         </div>
       </nav>

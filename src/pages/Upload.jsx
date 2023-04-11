@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Input from 'src/components/Input';
 import Button from 'src/components/Button';
 import app from '../../firebase';
 import { getDatabase, push, ref } from 'firebase/database';
@@ -13,27 +12,44 @@ import InputForm from 'src/components/InputForm';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-
+import { WithContext as ReactTags } from 'react-tag-input';
+import pluginTags from 'src/components/PluginTags';
+import 'src/components/ReactTags.css';
 const schema = yup.object({
-  displayName: yup
+  author: yup
     .string()
-    .required('Display name from 6-24 character')
-    .min(6, 'Display name from 6-24 character')
-    .max(24, 'Display name from 6-24 character'),
+    .required('Author name from 6-24 character')
+    .min(6, 'Author name from 6-24 character')
+    .max(24, 'Author name from 6-24 character'),
 
-  avatar: yup
+  name: yup
     .string()
-    .required('Avatar from 6-24 character')
-    .min(6, 'Avatar from 6-24 character')
-    .max(24, 'Avatar from 6-24 character'),
+    .required('Plugin name from 6-24 character')
+    .min(6, 'Plugin name from 6-24 character')
+    .max(24, 'Plugin name from 6-24 character'),
 
-  position: yup
+  file: yup
     .string()
-    .required('Position from 6-24 character')
-    .min(6, 'Position from 6-24 character')
-    .max(24, 'Position from 6-24 character')
+    .required('File link from 6-24 character')
+    .min(6, 'File link from 6-24 character'),
+
+  description: yup
+    .string()
+    .required('Description from 6-24 character')
+    .min(6, 'Description from 6-24 character')
 });
 
+const suggestions = pluginTags.map((tag) => {
+  return { id: tag, text: tag };
+});
+
+const KeyCodes = {
+  comma: 188,
+  enter: 13,
+  tab: 9
+};
+
+const delimiters = [KeyCodes.comma, KeyCodes.enter, KeyCodes.tab];
 const Upload = () => {
   const [formData, setFormData] = useState({
     author: '',
@@ -41,8 +57,38 @@ const Upload = () => {
     thumbnail: '',
     file: '',
     description: '',
-    tag: ''
+    tags: ''
   });
+
+  //#region Tags logic
+  const [tagList, setTagList] = useState([
+    {
+      id: 'Tekla',
+      text: 'Tekla'
+    }
+  ]);
+
+  const handleDelete = (i) => {
+    setTagList(tagList.filter((tag, index) => index !== i));
+  };
+
+  const handleAddition = (tag) => {
+    setTagList([...tagList, tag]);
+  };
+  const handleDrag = (tag, currPos, newPos) => {
+    const newTags = tagList.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    setTagList(newTags);
+  };
+
+  const renderSuggestion = ({ text }) => (
+    <div className='text-bright-blue-500 font-semibold italic'>{text}</div>
+  );
+  //#endregion Tags logic
 
   const {
     register,
@@ -76,42 +122,60 @@ const Upload = () => {
     imgFormData.append('file', imgFile);
     imgFormData.append('upload_preset', 'zlqfvhpn');
     const uploadImage = async () => {
-      const response = await axios({
-        method: 'post',
-        url: 'https://api.cloudinary.com/v1_1/dff6kiqfh/image/upload',
-        data: imgFormData
-      });
-      console.log(response.data);
+      // const response = await axios({
+      //   method: 'post',
+      //   url: 'https://api.cloudinary.com/v1_1/dff6kiqfh/image/upload',
+      //   data: imgFormData
+      // });
+
       setFormData((formData) => ({
         ...formData,
-        thumbnail: response.data.url
+        thumbnail: 'api.test.com/v1_1'
+        // thumbnail: response.data.url
       }));
     };
     uploadImage();
   };
-  const handlePost = () => {
-    handleImageUpload();
-    setFormData((formData) => ({ ...formData, ['created']: Date.now() }));
 
-    push(ref(db, 'plugins'), formData)
+  const onSubmit = async () => {
+    const imgFormData = new FormData();
+    imgFormData.append('file', imgFile);
+    imgFormData.append('upload_preset', 'zlqfvhpn');
+    const response = await axios({
+      method: 'post',
+      url: 'https://api.cloudinary.com/v1_1/dff6kiqfh/image/upload',
+      data: imgFormData
+    });
+    const tags = [];
+    for (let tag of tagList) {
+      tags.push(tag.text);
+    }
+
+    setFormData({
+      ...formData,
+      // thumbnail: 'api.test.com/v1_1',
+      thumbnail: response.data.url,
+      ['tags']: tags,
+      ['created']: Date.now()
+    });
+
+    await push(ref(db, 'plugins'), formData)
       .then(() => {
         toast.success('upload sucessfully!');
       })
       .catch(() => {
         toast.error('upload false!');
       });
-
+    console.log(formData);
+    //reset
     setFormData({
       author: '',
       name: '',
       thumbnail: '',
       file: '',
-      description: ''
+      description: '',
+      tags: ''
     });
-  };
-
-  const onSubmit = (data) => {
-    console.log(data);
   };
 
   return (
@@ -134,15 +198,28 @@ const Upload = () => {
         <InputForm
           type='text'
           name='name'
-          placeholder="Plugin's name"
+          placeholder='Plugin name'
           register={register}
           errorsMessage={errors.name?.message}
           onChange={handleInput}
         />
+
+        <ReactTags
+          tags={tagList}
+          suggestions={suggestions}
+          delimiters={delimiters}
+          handleDelete={handleDelete}
+          handleAddition={handleAddition}
+          handleDrag={handleDrag}
+          inputFieldPosition='bottom'
+          placeholder='Add new tag: Tekla, PPVC, Model,...'
+          renderSuggestion={renderSuggestion}
+          autocomplete
+        />
+
         <InputForm
           type='file'
           name='thumbnail'
-          placeholder="Plugin's name"
           register={register}
           errorsMessage={errors.thumbnail?.message}
           onChange={handleImage}
