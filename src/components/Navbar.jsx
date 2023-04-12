@@ -8,21 +8,26 @@ const Navbar = () => {
   const user = true;
 
   const userAvatar = document.querySelector('.user-avatar');
-  const userMenu = document.querySelector('.user-menu');
+  const userMenu = document.querySelector('.clickable');
+  // const clickableElements = document.querySelectorAll('.user-menu1 .clickable');
 
   document.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // console.log('userAvatar:', userAvatar);
+    console.log('userMenu:', userMenu);
     const isClickInside = userMenu.contains(e.target);
     const isClickAvatar = userAvatar.contains(e.target);
 
-    console.log(e.target);
-    console.log('isClickInside:', isClickInside);
-    console.log('isClickAvatar:', isClickAvatar);
+    // console.log(e.target);
+    // console.log('isClickInside:', isClickInside);
+    // console.log('isClickAvatar:', isClickAvatar);
     if (!isClickInside && !isClickAvatar) {
       userMenu.classList.add('hidden');
     }
   });
   const userToggle = (e) => {
-    userMenu.classList.remove('hidden');
+    e.stopPropagation();
+    userMenu.classList.toggle('hidden');
   };
   return (
     <header className='h-17 fixed w-full p-3 bg-white shadow-md z-50'>
@@ -45,11 +50,11 @@ const Navbar = () => {
               className='h-14 p-3 inline-block'
             />
           </div>
-          <div className='ml-4'>
+          <div className='ml-4 '>
             <img
               src='https://assets-us-01.kc-usercontent.com/1ca05609-4ad1-009e-bc40-2e1230b16a75/290606c0-4f8a-401b-a70e-434ccc4a36b0/tekla%20structures.png?w=400&h=300&fit=clip'
               alt=''
-              className='h-14 user-avatar'
+              className='h-14 '
             />
           </div>
         </div>
@@ -76,12 +81,12 @@ const Navbar = () => {
                   <img
                     src='https://api.multiavatar.com/default.png'
                     alt='avatar'
-                    className='max-h-full w-auto border-2 border-bright-blue-100 hover:border-bright-blue-300  rounded-full '
+                    className='max-h-full w-auto border-2 border-bright-blue-100 hover:border-bright-blue-300  rounded-full user-avatar'
                     onClick={userToggle}
                   />
 
-                  <ul className='absolute top-12 right-0 border-bright-blue-200 rounded-md bg-white border min-w-[250px] text-base font-normal p-2 shadow-lg user-menu'>
-                    <li className='px-4 py-2 border-b-[1px] hover:bg-bright-blue-125 hover:underline group mb-1 '>
+                  <ul className='absolute top-12 right-0 border-bright-blue-200 rounded-md bg-white border min-w-[250px] text-base font-normal p-2 shadow-lg user-menu1 clickable'>
+                    <li className='px-4 py-2 border-b-[1px] hover:bg-bright-blue-125 hover:underline group mb-1 user-menu1'>
                       <p className='font-bold text-slate-600 group-hover:text-bright-blue-500'>
                         Marc Nguyen
                       </p>
@@ -112,7 +117,7 @@ const Navbar = () => {
                         className='px-4 py-2 hover:bg-bright-blue-125 hover:underline hover:text-bright-blue-500 text-base text-slate-600'
                         key={link.route}
                       >
-                        <Link to={`/${link.route}`}>{link.content}</Link>
+                        {/* <Link to={`/${link.route}`}>{link.content}</Link> */}
                       </li>
                     ))}
                     <li className='px-4 py-2 border-t-[1px] hover:bg-bright-blue-125 hover:underline group mb-1 '>
