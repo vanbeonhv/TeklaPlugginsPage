@@ -1,33 +1,75 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { RxCodesandboxLogo } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 import Button from './Button';
 import { BsBell } from 'react-icons/bs';
+import { v4 as uuidv4 } from 'uuid';
 
 const Navbar = () => {
   const user = true;
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
-  const userAvatar = document.querySelector('.user-avatar');
-  const userMenu = document.querySelector('.clickable');
-  // const clickableElements = document.querySelectorAll('.user-menu1 .clickable');
-
-  document.addEventListener('click', (e) => {
+  //#region  Handle show sub menu
+  const handleHideMenu = (e) => {
     e.stopPropagation();
-    // console.log('userAvatar:', userAvatar);
-    console.log('userMenu:', userMenu);
-    const isClickInside = userMenu.contains(e.target);
+    const isClickInsideMenu = userMenu.contains(e.target);
     const isClickAvatar = userAvatar.contains(e.target);
 
-    // console.log(e.target);
-    // console.log('isClickInside:', isClickInside);
-    // console.log('isClickAvatar:', isClickAvatar);
-    if (!isClickInside && !isClickAvatar) {
-      userMenu.classList.add('hidden');
+    if (!isClickInsideMenu && !isClickAvatar) {
+      setShowUserMenu(false);
     }
-  });
+  };
+
+  useEffect(() => {
+    const userAvatar = document.querySelector('.user-avatar');
+    const userMenu = document.querySelector('.user-menu');
+    document.addEventListener('click', handleHideMenu);
+    return () => {
+      document.removeEventListener('click', handleHideMenu);
+    };
+  }, []);
+
   const userToggle = (e) => {
+    setShowUserMenu(!showUserMenu);
+  };
+  //#endregion Handle show sub menu
+  //#region Render Notification
+  const noti = [
+    { content: 'someone just like your post', route: '/#' },
+    { content: 'someone just like your post', route: '/#' },
+    { content: 'someone just like your post', route: '/#' },
+    { content: 'someone just like your post', route: '/#' }
+  ];
+  const [showNoti, setShowNoti] = useState(false);
+
+  const handleHideNoti = (e) => {
     e.stopPropagation();
-    userMenu.classList.toggle('hidden');
+
+    const isClickNotiIcon = notiIcon.contains(e.target);
+    const isClickInsideModal = notiModal.contains(e.target);
+
+    if (!isClickNotiIcon && !isClickInsideModal) {
+      setShowNoti(false);
+    }
+  };
+
+  useEffect(() => {
+    const notiIcon = document.querySelector('.noti-icon');
+    const notiModal = document.querySelector('.noti-modal');
+    document.addEventListener('click', handleHideNoti);
+    return () => {
+      document.removeEventListener('click', handleHideNoti);
+    };
+  }, []);
+
+  const notiToggle = () => {
+    setShowNoti(!showNoti);
+  };
+
+  //#endregion Render Notification
+
+  const handleSignOut = () => {
+    console.log('Sign out noti from console! \nPlease add code to handle');
   };
   return (
     <header className='h-17 fixed w-full p-3 bg-white shadow-md z-50'>
@@ -71,59 +113,83 @@ const Navbar = () => {
             </li>
             {user ? (
               <li className='flex items-center gap-3 text-2xl'>
-                <div className='p-2 pt-3 hover:bg-bright-blue-125 hover:text-bright-blue-500 rounded-lg relative h-12'>
-                  <BsBell />
-                  <div className='absolute top-10 right-0 border-bright-blue-200 rounded-md bg-white border'>
-                    <p>test</p>
+                <div className='p-2 pt-3 hover:bg-bright-blue-125 hover:text-bright-blue-500 rounded-lg relative h-12 select-none'>
+                  <BsBell onClick={notiToggle} className='noti-icon' />
+                  <div className={showNoti ? '' : 'hidden'}>
+                    <ul className='absolute top-12 right-0 border-bright-blue-200 rounded-md bg-white border min-w-[250px] text-base font-normal p-2 shadow-lg noti-modal'>
+                      {noti.map((noti) => {
+                        return (
+                          <li
+                            key={uuidv4()}
+                            className=' hover:bg-bright-blue-125 hover:underline hover:text-bright-blue-500 text-base text-slate-600'
+                          >
+                            <Link to={noti.route}>{noti.content}</Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
                 </div>
                 <div className='h-full relative'>
                   <img
                     src='https://api.multiavatar.com/default.png'
                     alt='avatar'
-                    className='max-h-full w-auto border-2 border-bright-blue-100 hover:border-bright-blue-300  rounded-full user-avatar'
+                    className='max-h-full w-auto border-2 border-bright-blue-100 hover:border-bright-blue-300 rounded-full user-avatar '
                     onClick={userToggle}
                   />
+                  <div className='user-menu'>
+                    <div className={showUserMenu ? ' ' : ' hidden'}>
+                      <ul className='absolute top-12 right-0 border-bright-blue-200 rounded-md bg-white border min-w-[250px] text-base font-normal p-2 shadow-lg'>
+                        <li className='px-4 py-2 border-b-[1px] hover:bg-bright-blue-125 hover:underline group mb-1 '>
+                          <p className='font-bold text-slate-600 group-hover:text-bright-blue-500'>
+                            Marc Nguyen
+                          </p>
+                          <p className='text-xs text-slate-400 group-hover:text-bright-blue-500 mb-2'>
+                            @Bim Designer
+                          </p>
+                        </li>
+                        {[
+                          {
+                            content: 'Dash Board',
+                            route: 'dashboard'
+                          },
+                          {
+                            content: 'Upload Plugin',
+                            route: 'upload'
+                          },
 
-                  <ul className='absolute top-12 right-0 border-bright-blue-200 rounded-md bg-white border min-w-[250px] text-base font-normal p-2 shadow-lg user-menu1 clickable'>
-                    <li className='px-4 py-2 border-b-[1px] hover:bg-bright-blue-125 hover:underline group mb-1 user-menu1'>
-                      <p className='font-bold text-slate-600 group-hover:text-bright-blue-500'>
-                        Marc Nguyen
-                      </p>
-                      <p className='text-xs text-slate-400 group-hover:text-bright-blue-500 mb-2'>
-                        @Bim Designer
-                      </p>
-                    </li>
-                    {[
-                      {
-                        content: 'Dash Board',
-                        route: 'dashboard'
-                      },
-                      {
-                        content: 'Upload Plugin',
-                        route: 'upload'
-                      },
-
-                      {
-                        content: 'Reading list',
-                        route: 'reading-list'
-                      },
-                      {
-                        content: 'Settings',
-                        route: 'settings'
-                      }
-                    ].map((link) => (
-                      <li
-                        className='px-4 py-2 hover:bg-bright-blue-125 hover:underline hover:text-bright-blue-500 text-base text-slate-600'
-                        key={link.route}
-                      >
-                        {/* <Link to={`/${link.route}`}>{link.content}</Link> */}
-                      </li>
-                    ))}
-                    <li className='px-4 py-2 border-t-[1px] hover:bg-bright-blue-125 hover:underline group mb-1 '>
-                      Sign out
-                    </li>
-                  </ul>
+                          {
+                            content: 'Reading list',
+                            route: 'reading-list'
+                          },
+                          {
+                            content: 'Settings',
+                            route: 'settings'
+                          }
+                        ].map((link) => (
+                          <li
+                            className=' hover:bg-bright-blue-125 hover:underline hover:text-bright-blue-500 text-base text-slate-600'
+                            key={link.route}
+                          >
+                            <Link
+                              to={`/${link.route}`}
+                              className='w-full block px-4 py-2'
+                            >
+                              {link.content}
+                            </Link>
+                          </li>
+                        ))}
+                        <li
+                          className='px-4 py-2 border-t-[1px] hover:bg-bright-blue-125 hover:underline hover:text-red-600 mb-1 
+                        '
+                          onClick={handleSignOut}
+                        >
+                          Sign out
+                        </li>
+                      </ul>
+                      <p>aa </p>
+                    </div>
+                  </div>
                 </div>
               </li>
             ) : (

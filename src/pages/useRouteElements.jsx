@@ -14,6 +14,9 @@ import Policy from './Policy';
 import TermOfService from './TermOfService';
 import PostUpload from './PostUpload';
 import NewAccount from './NewAccount';
+import Dashboard from './Dashboard';
+import ReadingList from './ReadingList';
+import Settings from './Settings';
 
 const useRouteElements = () => {
   const routeElements = useRoutes([
@@ -114,6 +117,33 @@ const useRouteElements = () => {
         <LoginLayout>
           <NewAccount />
         </LoginLayout>
+      )
+    },
+
+    {
+      path: '/dashboard',
+      element: (
+        <MainLayout>
+          <Dashboard />
+        </MainLayout>
+      )
+    },
+
+    {
+      path: '/reading-list',
+      element: (
+        <MainLayout>
+          <ReadingList />
+        </MainLayout>
+      )
+    },
+
+    {
+      path: '/settings',
+      element: (
+        <MainLayout>
+          <Settings />
+        </MainLayout>
       )
     }
   ]);
