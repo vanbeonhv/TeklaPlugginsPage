@@ -15,7 +15,7 @@ const Msg = ({ closeToast, toastProps, userData }) => (
   <p>
     Hi{' '}
     <span className='text-bright-blue-500 font-medium capitalize'>
-      {userData ? userData.name : 'bro!'}
+      {userData.name ? userData.name : 'bro!'}
     </span>
     <DiCodeigniter className='inline-block pb-2 fill-orange-600 text-lg' />,
     welcome back!
@@ -37,20 +37,24 @@ function LandingPage() {
     }
   };
 
-  const [user, setUser] = useState();
+  // const [user, setUser] = useState();
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setUser(user);
-        // loginBtn.classList.add('hidden');
-        console.log('user:', user);
+        // setUser(user);
 
         const uid = user.uid;
         const userDataList = await getUserFromDb();
-        const userIdList = Object.keys(userDataList);
-        const userId = userIdList.filter((userId) => userId === uid);
-        const userData = userDataList[userId];
+        // debugger;
+        let userData;
+        for (let key in userDataList) {
+          if (userDataList[key].uid === uid) {
+            userData = userDataList[key];
+            console.log(userData);
+            break;
+          }
+        }
         toast(<Msg userData={userData} />);
       } else {
         console.log('user signed out!');

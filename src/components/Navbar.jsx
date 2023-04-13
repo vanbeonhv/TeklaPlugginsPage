@@ -7,9 +7,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Navbar = () => {
   const user = true;
-  const [showUserMenu, setShowUserMenu] = useState(false);
 
   //#region  Handle show sub menu
+  let userAvatar;
+  let userMenu;
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const handleHideMenu = (e) => {
     e.stopPropagation();
     const isClickInsideMenu = userMenu.contains(e.target);
@@ -21,8 +23,8 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    const userAvatar = document.querySelector('.user-avatar');
-    const userMenu = document.querySelector('.user-menu');
+    userAvatar = document.querySelector('.user-avatar');
+    userMenu = document.querySelector('.user-menu');
     document.addEventListener('click', handleHideMenu);
     return () => {
       document.removeEventListener('click', handleHideMenu);
@@ -34,14 +36,15 @@ const Navbar = () => {
   };
   //#endregion Handle show sub menu
   //#region Render Notification
+  let notiIcon;
+  let notiModal;
+  const [showNoti, setShowNoti] = useState(false);
   const noti = [
     { content: 'someone just like your post', route: '/#' },
     { content: 'someone just like your post', route: '/#' },
     { content: 'someone just like your post', route: '/#' },
     { content: 'someone just like your post', route: '/#' }
   ];
-  const [showNoti, setShowNoti] = useState(false);
-
   const handleHideNoti = (e) => {
     e.stopPropagation();
 
@@ -54,8 +57,8 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    const notiIcon = document.querySelector('.noti-icon');
-    const notiModal = document.querySelector('.noti-modal');
+    notiIcon = document.querySelector('.noti-icon');
+    notiModal = document.querySelector('.noti-modal');
     document.addEventListener('click', handleHideNoti);
     return () => {
       document.removeEventListener('click', handleHideNoti);
@@ -113,15 +116,18 @@ const Navbar = () => {
             </li>
             {user ? (
               <li className='flex items-center gap-3 text-2xl'>
-                <div className='p-2 pt-3 hover:bg-bright-blue-125 hover:text-bright-blue-500 rounded-lg relative h-12 select-none'>
-                  <BsBell onClick={notiToggle} className='noti-icon' />
+                <div
+                  className='p-2 hover:bg-bright-blue-125 hover:text-bright-blue-500 rounded-lg relative h-10 select-none noti-icon'
+                  onClick={notiToggle}
+                >
+                  <BsBell className='' />
                   <div className={showNoti ? '' : 'hidden'}>
-                    <ul className='absolute top-12 right-0 border-bright-blue-200 rounded-md bg-white border min-w-[250px] text-base font-normal p-2 shadow-lg noti-modal'>
+                    <ul className='absolute top-12 right-0 border-bright-blue-200 rounded-md bg-white border min-w-[300px] text-base font-normal p-2 shadow-lg noti-modal'>
                       {noti.map((noti) => {
                         return (
                           <li
                             key={uuidv4()}
-                            className=' hover:bg-bright-blue-125 hover:underline hover:text-bright-blue-500 text-base text-slate-600'
+                            className=' hover:bg-bright-blue-125 hover:text-bright-blue-500 text-xs text-slate-600 p-2'
                           >
                             <Link to={noti.route}>{noti.content}</Link>
                           </li>
