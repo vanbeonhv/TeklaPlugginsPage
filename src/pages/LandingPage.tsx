@@ -9,9 +9,14 @@ import { useEffect, useState } from 'react';
 import { child, get, getDatabase, ref } from 'firebase/database';
 import { DiCodeigniter } from 'react-icons/di';
 
+interface ToastMsgProps {
+  closeToast?: any;
+  toastProps?: any;
+  userData: { name?: string };
+}
 const loginBtn = document.querySelector('.login-button');
 
-const Msg = ({ closeToast, toastProps, userData }) => (
+const Msg = ({ closeToast, toastProps, userData }: ToastMsgProps) => (
   <p>
     Hi{' '}
     <span className='text-bright-blue-500 font-medium capitalize'>
@@ -138,7 +143,7 @@ function LandingPage() {
           </div>
         </div>
       </section>
-      <ToastContainer autoClose='1500' />
+      <ToastContainer autoClose={1500} />
     </main>
   );
 }

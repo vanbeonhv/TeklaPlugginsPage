@@ -1,8 +1,8 @@
 import React from 'react';
-import Footer from 'src/components/Footer';
-import Navbar from 'src/components/Navbar';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <Navbar />

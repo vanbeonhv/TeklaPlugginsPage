@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Button from 'src/components/Button';
+import Button from '../components/Button';
 import app from '../../firebase';
 import { getDatabase, push, ref } from 'firebase/database';
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,12 +8,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { HiDownload, HiOutlineDocumentAdd } from 'react-icons/hi';
 import { BsArrowRight } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
-import InputForm from 'src/components/InputForm';
+import InputForm from '../components/InputForm';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { WithContext as ReactTags } from 'react-tag-input';
-import pluginTags from 'src/components/PluginTags';
+import pluginTags from '../components/PluginTags';
 import 'src/components/ReactTags.css';
 const schema = yup.object({
   author: yup

@@ -1,7 +1,7 @@
 import React from 'react';
-import Footer from 'src/components/Footer';
+import Footer from '../components/Footer';
 
-const LoginLayout = ({ children }) => {
+const LoginLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       {children}

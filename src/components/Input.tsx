@@ -1,6 +1,20 @@
 import React from 'react';
 
-const Input = ({
+interface InputProps {
+  type: string;
+  id?: string;
+  name: string;
+  label?: string;
+  placeholder: string;
+  error: any;
+  onChange:
+    | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    | undefined;
+  rows?: number;
+  cols?: number;
+}
+
+const Input: React.FC<InputProps> = ({
   type,
   id,
   name,
@@ -50,8 +64,8 @@ const Input = ({
           <textarea
             name={name}
             id={id}
-            cols='58'
-            rows='5'
+            cols={58}
+            rows={5}
             onChange={onChange}
             placeholder={placeholder}
             className='border border-bright-blue-200 p-2 rounded-lg focus:border-bright-blue-500 focus:shadow-lg outline-none resize-none'
@@ -61,7 +75,7 @@ const Input = ({
       );
 
     default:
-      break;
+      return null;
   }
 };
 export default Input;

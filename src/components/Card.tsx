@@ -3,7 +3,13 @@ import { BsArrowRight, BsFastForwardFill } from 'react-icons/bs';
 import { FaAngleDoubleUp, FaBookOpen, FaShapes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-const getIconByName = (iconName) => {
+interface CardProps {
+  iconName: string;
+  header: string;
+  content: string;
+}
+
+const getIconByName = (iconName: string) => {
   switch (iconName) {
     case 'block':
       return <FaShapes />;
@@ -16,7 +22,7 @@ const getIconByName = (iconName) => {
   }
 };
 
-const Card = ({ iconName, header, content }) => {
+const Card = ({ iconName, header, content }: CardProps) => {
   const icon = getIconByName(iconName);
   return (
     <div className='bg-white rounded-lg shadow-sm xl:w-1/4 lg:w-1/3 md:w-1/2 sm:w-full p-6'>

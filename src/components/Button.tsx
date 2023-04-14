@@ -4,8 +4,18 @@ import { Link } from 'react-router-dom';
 import { HiOutlineDownload } from 'react-icons/hi';
 import { ImUpload } from 'react-icons/im';
 
+interface ButtonProps {
+  btnType: string;
+  children: React.ReactNode;
+  linkTo: string;
+  iconName?: string;
+  blank?: boolean;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  type: string;
+}
+
 //btnType: ['.btn-primary', '.btn-secondary'];
-const Button = ({
+const Button: React.FC<ButtonProps> = ({
   btnType,
   children,
   linkTo,
@@ -14,7 +24,7 @@ const Button = ({
   onClick,
   type
 }) => {
-  const getIcon = (icon) => {
+  const getIcon = (icon: string) => {
     switch (icon) {
       case 'link':
         return <BsArrowRightCircleFill className='inline-block ml-2 mb-1' />;
@@ -24,10 +34,10 @@ const Button = ({
         return <ImUpload className='inline-block ml-2 mb-1' />;
 
       default:
-        break;
+        return null;
     }
   };
-  const icon = getIcon(iconName);
+  const icon = getIcon(iconName || '');
   switch (type) {
     case 'button':
       return (
@@ -46,7 +56,6 @@ const Button = ({
           </button>
         </Link>
       );
-      break;
     case 'submit':
       return (
         <div className=''>
@@ -58,14 +67,14 @@ const Button = ({
           </button>
         </div>
       );
-      break;
     case 'login-button':
       return (
         <button className='px-5 bg-bright-blue-500 text-white rounded-lg font-medium hover:bg-bright-blue-700 inline-block login-button'>
           <Link to={linkTo}>{children}</Link>
         </button>
       );
-      break;
+    default:
+      return null;
   }
 };
 export default Button;

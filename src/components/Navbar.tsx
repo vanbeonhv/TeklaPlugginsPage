@@ -9,13 +9,14 @@ const Navbar = () => {
   const user = true;
 
   //#region  Handle show sub menu
-  let userAvatar;
-  let userMenu;
+  let userAvatar: HTMLElement | null;
+  let userMenu: HTMLElement | null;
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const handleHideMenu = (e) => {
+  const handleHideMenu = (e: React.MouseEvent<EventTarget>) => {
     e.stopPropagation();
-    const isClickInsideMenu = userMenu.contains(e.target);
-    const isClickAvatar = userAvatar.contains(e.target);
+    const targetNode = e.target as Node;
+    const isClickInsideMenu = userMenu.contains(targetNode);
+    const isClickAvatar = userAvatar.contains(targetNode);
 
     if (!isClickInsideMenu && !isClickAvatar) {
       setShowUserMenu(false);
