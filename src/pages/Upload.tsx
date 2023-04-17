@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import axios from 'axios';
 import Button from '../components/Button';
 import app from '../../firebase';
@@ -15,6 +15,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { WithContext as ReactTags } from 'react-tag-input';
 import pluginTags from '../components/PluginTags';
 import 'src/components/ReactTags.css';
+import { IPluginDetail } from '../types/types';
+
+interface ITag {
+  id: string;
+  text: string;
+}
+
+interface ISuggestion {
+  text: string;
+}
+
 const schema = yup.object({
   author: yup
     .string()
@@ -51,31 +62,31 @@ const KeyCodes = {
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter, KeyCodes.tab];
 const Upload = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<IPluginDetail>({
     author: '',
     name: '',
     thumbnail: '',
     file: '',
     description: '',
-    tags: ''
+    tags: []
   });
 
   //#region Tags logic
-  const [tagList, setTagList] = useState([
+  const [tagList, setTagList] = useState<ITag[]>([
     {
       id: 'Tekla',
       text: 'Tekla'
     }
   ]);
 
-  const handleDelete = (i) => {
-    setTagList(tagList.filter((tag, index) => index !== i));
+  const handleDelete = (i: number) => {
+    setTagList(tagList.filter((tag: ITag, index: number) => index !== i));
   };
 
-  const handleAddition = (tag) => {
+  const handleAddition = (tag: ITag) => {
     setTagList([...tagList, tag]);
   };
-  const handleDrag = (tag, currPos, newPos) => {
+  const handleDrag = (tag: ITag, currPos: number, newPos: number) => {
     const newTags = tagList.slice();
 
     newTags.splice(currPos, 1);
@@ -85,7 +96,7 @@ const Upload = () => {
     setTagList(newTags);
   };
 
-  const renderSuggestion = ({ text }) => (
+  const renderSuggestion = ({ text }: ISuggestion) => (
     <div className='text-bright-blue-500 font-semibold italic'>{text}</div>
   );
   //#endregion Tags logic
@@ -98,28 +109,29 @@ const Upload = () => {
     resolver: yupResolver(schema)
   });
 
-  const [base64Image, setBase64Image] = useState('');
-  const [imgFile, setImgFile] = useState();
+  const [base64Image, setBase64Image] = useState<string | ArrayBuffer | null>(
+    null
+  );
+  const [imgFile, setImgFile] = useState<File | undefined>(undefined);
 
-  const handleInput = (e) => {
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((formData) => ({ ...formData, [name]: value }));
   };
 
-  const handleImage = (e) => {
-    setImgFile(e.target.files[0]);
+  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+    setImgFile(e.target.files?.[0]);
     const reader = new FileReader();
     reader.onload = () => {
-      const base64String = reader.result;
-      setBase64Image(base64String);
+      setBase64Image(reader.result);
     };
-    reader.readAsDataURL(e.target.files[0]);
+    reader.readAsDataURL(e.target.files?.[0] as Blob);
   };
 
   const db = getDatabase();
   const handleImageUpload = () => {
     const imgFormData = new FormData();
-    imgFormData.append('file', imgFile);
+    imgFormData.append('file', imgFile as Blob);
     imgFormData.append('upload_preset', 'zlqfvhpn');
     const uploadImage = async () => {
       // const response = await axios({
@@ -139,7 +151,7 @@ const Upload = () => {
 
   const onSubmit = async () => {
     const imgFormData = new FormData();
-    imgFormData.append('file', imgFile);
+    imgFormData.append('file', imgFile as Blob);
     imgFormData.append('upload_preset', 'zlqfvhpn');
     const response = await axios({
       method: 'post',
@@ -155,8 +167,8 @@ const Upload = () => {
       ...formData,
       // thumbnail: 'api.test.com/v1_1',
       thumbnail: response.data.url,
-      ['tags']: tags,
-      ['created']: Date.now()
+      tags: tags,
+      createAt: Date.now()
     });
 
     await push(ref(db, 'plugins'), formData)
@@ -174,7 +186,7 @@ const Upload = () => {
       thumbnail: '',
       file: '',
       description: '',
-      tags: ''
+      tags: []
     });
   };
 
@@ -265,7 +277,7 @@ const Upload = () => {
             <img
               src={
                 base64Image
-                  ? base64Image
+                  ? base64Image.toString()
                   : 'https://i3.cpcache.com/merchandise/632_550x550_Front_Color-White.jpg?Size=Small-3x3&AttributeValue=NA&region=%7B%22name%22:%22FrontCenter%22,%22width%22:3.25,%22height%22:3.25,%22alignment%22:%22MiddleCenter%22,%22orientation%22:0,%22dpi%22:200,%22crop_x%22:0,%22crop_y%22:0,%22crop_h%22:600,%22crop_w%22:600,%22scale%22:0,%22template%22:%7B%22id%22:102380449,%22params%22:%7B%7D%7D%7D'
               }
               alt='plugin image'

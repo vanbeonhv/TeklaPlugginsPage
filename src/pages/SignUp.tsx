@@ -1,8 +1,8 @@
 import React from 'react';
-import { set, useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, set, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import Button from 'src/components/Button';
+import Button from '../components/Button';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import app from '../../firebase';
@@ -84,7 +84,7 @@ const SignUp = () => {
         console.log(`error ${error.code}: ${error.message}`);
       });
   };
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const { email, password } = data;
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -153,23 +153,23 @@ const SignUp = () => {
         <div className=''>
           <input
             type='email'
-            name='email'
+            // name='email'
             className='border border-bright-blue-200 focus:border-bright-blue-500 focus:shadow-md outline-none p-2 mb-1  rounded-lg duration-150 w-full'
             placeholder='Your email'
             {...register('email', { required: true })}
           />
           <p className='min-h-[1rem] text-red-500 italic pl-2'>
-            {errors.email?.message}
+            {errors.email?.message?.toString()}
           </p>
           <input
             type='password'
-            name='password'
+            // name='password'
             className='border border-bright-blue-200 focus:border-bright-blue-500 focus:shadow-md outline-none p-2 mt-1 rounded-lg duration-150 w-full'
             placeholder='Create a password'
             {...register('password', { required: true })}
           />
           <p className='min-h-[1rem] text-red-500 italic pl-2'>
-            {errors.password?.message}
+            {errors.password?.message?.toString()}
           </p>
           <div className=' text-sm text-slate-700 py-2 px-4 cursor-default'>
             By signing up, you agree to our
@@ -193,7 +193,7 @@ const SignUp = () => {
             </Link>
           </p>
         </div>
-        <ToastContainer autoClose={2000} theme='colored' pauseOnHover='false' />
+        <ToastContainer autoClose={2000} theme='colored' pauseOnHover={false} />
       </form>
       <div></div>
     </div>

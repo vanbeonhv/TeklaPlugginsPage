@@ -1,5 +1,10 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import {
+  FieldValue,
+  FieldValues,
+  SubmitHandler,
+  useForm
+} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
@@ -16,6 +21,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { RxCodesandboxLogo } from 'react-icons/rx';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
+import Button from '../components/Button';
 
 const schema = yup.object({
   email: yup
@@ -81,7 +87,7 @@ const Login = () => {
         console.log(`error ${error.code}: ${error.message}`);
       });
   };
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const { email, password } = data;
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -139,27 +145,27 @@ const Login = () => {
         <div className=''>
           <input
             type='email'
-            name='email'
+            //  name='email' Register already have name property. commented then need to test
             className='border border-bright-blue-200 focus:border-bright-blue-500 focus:shadow-md outline-none p-2 mb-1  rounded-lg duration-150 w-full'
             placeholder='Email'
             {...register('email', { required: true })}
           />
           <p className='min-h-[1rem] text-red-500 italic pl-2'>
-            {errors.email?.message}
+            {errors.email?.message?.toString()}
           </p>
           <input
             type='password'
-            name='password'
+            // name='password' same commet with name='email' above
             className='border border-bright-blue-200 focus:border-bright-blue-500 focus:shadow-md outline-none p-2 mt-1 rounded-lg duration-150 w-full'
             placeholder='Password'
             {...register('password', { required: true })}
           />
           <p className='min-h-[1rem] text-red-500 italic pl-2'>
-            {errors.password?.message}
+            {errors.password?.message?.toString()}
           </p>
           <div className='flex justify-between items-center text-sm text-slate-500 py-2 '>
             <div className='flex flex-row-reverse'>
-              <label className=' leading-5 pl-2' forhtml='remember-password'>
+              <label className=' leading-5 pl-2' htmlFor='remember-password'>
                 Remenber me
               </label>
               <input
@@ -185,7 +191,7 @@ const Login = () => {
             </Link>
           </p>
         </div>
-        <ToastContainer autoClose={3000} theme='colored' pauseOnHover='false' />
+        <ToastContainer autoClose={3000} theme='colored' pauseOnHover={false} />
       </form>
       <div></div>
     </div>

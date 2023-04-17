@@ -4,10 +4,10 @@ import React from 'react';
 interface InputFormProps {
   type: string;
   name: string;
-  placeholder: string;
+  placeholder?: string;
   register: any;
-  errorsMessage: any;
-  onChange:
+  errorsMessage?: any;
+  onChange?:
     | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     | undefined;
 }

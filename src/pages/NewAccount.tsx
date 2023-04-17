@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
-import Button from 'src/components/Button';
+import React, { ChangeEvent, useState } from 'react';
+import Button from '../components/Button';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaRegGrinStars } from 'react-icons/fa';
-import InputForm from 'src/components/InputForm';
+import InputForm from '../components/InputForm';
+
+// type FieldValues = {
+//   example: string,
+//   exampleRequired: string,
+// };
 
 const schema = yup.object({
   displayName: yup
@@ -35,18 +40,20 @@ const NewAccount = () => {
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema) });
 
-  const [imgFile, setImgFile] = useState();
-  const [base64Image, setBase64Image] = useState('');
+  const [imgFile, setImgFile] = useState<File | undefined>(undefined);
+  const [base64Image, setBase64Image] = useState<string | ArrayBuffer | null>(
+    null
+  );
 
-  const handleImage = (e) => {
-    setImgFile(e.target.files[0]);
+  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+    setImgFile(e.target.files?.[0]);
     const reader = new FileReader();
     reader.onload = () => {
       setBase64Image(reader.result);
     };
-    reader.readAsDataURL(e.target.files[0]);
+    reader.readAsDataURL(e.target.files?.[0] as Blob);
   };
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
   };
 
@@ -66,7 +73,7 @@ const NewAccount = () => {
         <img
           src={
             base64Image
-              ? base64Image
+              ? base64Image.toString()
               : 'https://api.multiavatar.com/default.png'
           }
           alt='avatar'
@@ -106,7 +113,7 @@ const NewAccount = () => {
             finish
           </Button>
         </div>
-        <ToastContainer autoClose={3000} theme='colored' pauseOnHover='false' />
+        <ToastContainer autoClose={3000} theme='colored' pauseOnHover={false} />
       </form>
     </div>
   );

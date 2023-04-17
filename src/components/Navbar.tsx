@@ -12,11 +12,11 @@ const Navbar = () => {
   let userAvatar: HTMLElement | null;
   let userMenu: HTMLElement | null;
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const handleHideMenu = (e: React.MouseEvent<EventTarget>) => {
+  const handleHideMenu = (e: MouseEvent) => {
     e.stopPropagation();
     const targetNode = e.target as Node;
-    const isClickInsideMenu = userMenu.contains(targetNode);
-    const isClickAvatar = userAvatar.contains(targetNode);
+    const isClickInsideMenu = userMenu?.contains(targetNode);
+    const isClickAvatar = userAvatar?.contains(targetNode);
 
     if (!isClickInsideMenu && !isClickAvatar) {
       setShowUserMenu(false);
@@ -32,13 +32,13 @@ const Navbar = () => {
     };
   }, []);
 
-  const userToggle = (e) => {
+  const userToggle = () => {
     setShowUserMenu(!showUserMenu);
   };
   //#endregion Handle show sub menu
   //#region Render Notification
-  let notiIcon;
-  let notiModal;
+  let notiIcon: HTMLElement | null;
+  let notiModal: HTMLElement | null;
   const [showNoti, setShowNoti] = useState(false);
   const noti = [
     { content: 'someone just like your post', route: '/#' },
@@ -46,11 +46,11 @@ const Navbar = () => {
     { content: 'someone just like your post', route: '/#' },
     { content: 'someone just like your post', route: '/#' }
   ];
-  const handleHideNoti = (e) => {
+  const handleHideNoti = (e: MouseEvent) => {
     e.stopPropagation();
 
-    const isClickNotiIcon = notiIcon.contains(e.target);
-    const isClickInsideModal = notiModal.contains(e.target);
+    const isClickNotiIcon = notiIcon?.contains(e.target as Node);
+    const isClickInsideModal = notiModal?.contains(e.target as Node);
 
     if (!isClickNotiIcon && !isClickInsideModal) {
       setShowNoti(false);
@@ -200,7 +200,7 @@ const Navbar = () => {
                 </div>
               </li>
             ) : (
-              <Button type='login-button' linkTo='/login'>
+              <Button type='login-button' linkTo='/login' btnType='btn-primary'>
                 Login
               </Button>
             )}

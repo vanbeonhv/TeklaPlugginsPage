@@ -1,13 +1,13 @@
 import React from 'react';
 import { BsArrowRightCircleFill } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
+import { Link, To } from 'react-router-dom';
 import { HiOutlineDownload } from 'react-icons/hi';
 import { ImUpload } from 'react-icons/im';
 
 interface ButtonProps {
   btnType: string;
   children: React.ReactNode;
-  linkTo: string;
+  linkTo?: To;
   iconName?: string;
   blank?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -42,7 +42,7 @@ const Button: React.FC<ButtonProps> = ({
     case 'button':
       return (
         <Link
-          to={linkTo}
+          to={linkTo as To}
           className='inline-block'
           target={blank ? '_blank' : '_self'}
         >
@@ -70,7 +70,7 @@ const Button: React.FC<ButtonProps> = ({
     case 'login-button':
       return (
         <button className='px-5 bg-bright-blue-500 text-white rounded-lg font-medium hover:bg-bright-blue-700 inline-block login-button'>
-          <Link to={linkTo}>{children}</Link>
+          <Link to={linkTo as To}>{children}</Link>
         </button>
       );
     default:

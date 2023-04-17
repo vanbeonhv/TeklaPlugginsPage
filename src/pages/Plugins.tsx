@@ -8,9 +8,25 @@ import { getDatabase, ref, child, get, set, push } from 'firebase/database';
 import app from '../../firebase';
 import LoadingIcon from '../components/LoadingIcon';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { IPlugin } from '../types/types';
 
 const Plugins = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<IPlugin>({
+    id: {
+      author: '',
+      time: '',
+      heading: '',
+      description: '',
+      name: '',
+      thumbnail: '',
+      title: '',
+      file: '',
+      content: [],
+      image: [],
+      tags: [],
+      youtubeId: ''
+    }
+  });
   const db = getDatabase();
   const dbRef = ref(db);
   useEffect(() => {
@@ -88,8 +104,10 @@ const Plugins = () => {
                       key={uuidv4()}
                     >
                       <div className=' '>
-                        <h5 className=' mb-3 text-2xl font-semibold text-center capitalize cursor-default'>
-                          {data[key].name}
+                        <h5 className=' mb-3 text-2xl font-semibold text-center capitalize cursor-default hover:underline'>
+                          <Link to={`/plugins/${key}`} key={key}>
+                            {data[key].name}
+                          </Link>
                         </h5>
                         <div className='card-text cursor-default min-h-[96px]'>
                           {data[key].description}
@@ -102,7 +120,7 @@ const Plugins = () => {
 
                         <div className='mt-2 flex p-2 justify-between items-center bottom-5 '>
                           <div className='text-bright-blue-500 hover:underline '>
-                            <Link to={`/plugins/${key}`} key={data[key].id}>
+                            <Link to={`/plugins/${key}`} key={key}>
                               <span className='font-medium text-xl'>
                                 Learn more
                               </span>
