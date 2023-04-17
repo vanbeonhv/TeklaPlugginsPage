@@ -1,6 +1,17 @@
 import React from 'react';
 
-const InputForm = ({
+//double check register, errorsMessge
+interface InputFormProps {
+  type: string;
+  name: string;
+  placeholder?: string;
+  register: any;
+  errorsMessage?: any;
+  onChange?:
+    | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    | undefined;
+}
+const InputForm: React.FC<InputFormProps> = ({
   type,
   name,
   placeholder,
@@ -27,7 +38,6 @@ const InputForm = ({
           </p>
         </div>
       );
-      break;
     case 'textarea':
       return (
         <div>
@@ -47,7 +57,6 @@ const InputForm = ({
           </p>
         </div>
       );
-      break;
     case 'file':
       return (
         <div className='min-w-[400px] flex items-center pb-2'>
@@ -67,10 +76,9 @@ const InputForm = ({
           />
         </div>
       );
-      break;
 
     default:
-      break;
+      return null;
   }
 };
 

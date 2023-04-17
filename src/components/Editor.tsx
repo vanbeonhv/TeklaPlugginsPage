@@ -19,7 +19,8 @@ const theme = {
 
 // When the editor changes, you can get notified via the
 // LexicalOnChangePlugin!
-function onChange(editorState) {
+function onChange(editorState: { read: (arg0: () => void) => void }) {
+  //Check lai type cuar ediotr
   editorState.read(() => {
     // Read the contents of the EditorState here.
     const root = $getRoot();
@@ -47,7 +48,7 @@ function MyCustomAutoFocusPlugin() {
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
 // try to recover gracefully without losing user data.
-function onError(error) {
+function onError(error: any) {
   console.error(error);
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const YoutubeEmbed = ({ embedId }) => {
+const YoutubeEmbed = ({ embedId }: { embedId: string }) => {
   return (
     <div className='overflow-hidden pb-[56.25%] relative h-0'>
       <iframe

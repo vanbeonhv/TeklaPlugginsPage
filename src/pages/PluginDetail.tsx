@@ -7,6 +7,15 @@ import { BsShare } from 'react-icons/bs';
 import { HiOutlineDownload } from 'react-icons/hi';
 import YoutubeEmbed from '../components/YoutubeEmbed';
 import app from '../../firebase';
+import { IPluginDetail } from '../types/types';
+type element = Element | null;
+interface IAuthInfor {
+  avatar: string;
+  email: string;
+  position: string;
+  bio: string;
+}
+
 import {
   getDatabase,
   ref,
@@ -21,13 +30,30 @@ import Button from '../components/Button';
 
 const PluginDetail = () => {
   const handleLike = () => {
-    const likeIcon = document.querySelector('.like-icon');
-    likeIcon.classList.toggle('fill-red-600');
+    const likeIcon: element = document.querySelector('.like-icon');
+    likeIcon?.classList.toggle('fill-red-600');
     // likeIcon.classList.toggle('text-red-600');
   };
   const { id } = useParams();
-  const [pluginDetail, setPluginDetail] = useState('');
-  const [authorInfo, setAuthorInfo] = useState({});
+  const [pluginDetail, setPluginDetail] = useState<IPluginDetail>({
+    author: '',
+    heading: '',
+    description: '',
+    name: '',
+    thumbnail: '',
+    title: '',
+    file: '',
+    content: [],
+    image: [],
+    tags: [],
+    youtubeId: ''
+  });
+  const [authorInfo, setAuthorInfo] = useState<IAuthInfor>({
+    avatar: '',
+    email: '',
+    position: '',
+    bio: ''
+  });
   const db = getDatabase();
   const dbRef = ref(db);
 
@@ -56,7 +82,7 @@ const PluginDetail = () => {
   }, []);
 
   const { avatar, email, position, bio } = authorInfo;
-  const { author, time, heading, content, image, tags, youtubeId } =
+  const { author, createAt, heading, content, image, tags, youtubeId } =
     pluginDetail;
 
   return (
@@ -93,7 +119,7 @@ const PluginDetail = () => {
               <h5 className='text-sm font-bold capitalize'>{author}</h5>
               <div className='flex text-gray-500 text-xs '>
                 <p>Posted on </p>
-                <p className='pl-1'>{time}</p>
+                <p className='pl-1'>{createAt}</p>
               </div>
             </div>
           </div>
@@ -173,11 +199,12 @@ const PluginDetail = () => {
                     </div>
                   ))
                 : ''} */}
-              <YoutubeEmbed embedId={youtubeId} />
+              <YoutubeEmbed embedId={youtubeId as string} />
             </section>
 
             <div className='text-center'>
               <Button
+                type='button'
                 btnType='btn-primary'
                 iconName='download'
                 blank

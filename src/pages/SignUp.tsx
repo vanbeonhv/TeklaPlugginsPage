@@ -1,23 +1,25 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, set, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import Button from 'src/components/Button';
+import Button from '../components/Button';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import app from '../../firebase';
 import {
+  createUserWithEmailAndPassword,
   getAuth,
   GithubAuthProvider,
   GoogleAuthProvider,
-  signInWithEmailAndPassword,
   signInWithPopup
 } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import { RxCodesandboxLogo } from 'react-icons/rx';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
+import { child, getDatabase, push, ref } from 'firebase/database';
 
+const db = getDatabase();
 const schema = yup.object({
   email: yup
     .string()
@@ -29,7 +31,7 @@ const schema = yup.object({
     .min(6, 'Passowrd from 6-24 character')
     .max(24, 'Passowrd from 6-24 character')
 });
-const Login = () => {
+const SignUp = () => {
   let navigate = useNavigate();
   const {
     register,
@@ -82,16 +84,27 @@ const Login = () => {
         console.log(`error ${error.code}: ${error.message}`);
       });
   };
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const { email, password } = data;
-    signInWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-        navigate('/');
+        const userId = userCredential.user.uid;
+        push(ref(db, `users`), {
+          email: email,
+          avatar: 'https://api.multiavatar.com/default.png',
+          uid: userId,
+          createAt: Date.now()
+        }).then(() => {
+          toast.success('Sign up successfully!', {
+            position: toast.POSITION.TOP_CENTER
+          });
+          setTimeout(() => {
+            navigate('/new-account');
+          }, 2000);
+        });
       })
       .catch((error) => {
-        toast.error('Invalid username/password!', {
+        toast.error(`Sign up false. Error: ${error.code}`, {
           position: toast.POSITION.TOP_CENTER
         });
         console.log(`error ${error.code}: ${error.message}`);
@@ -113,7 +126,7 @@ const Login = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <h3 className='text-3xl font-semibold text-center mb-10 text-slate-700 cursor-default'>
-          Login
+          Join us today
         </h3>
 
         <button
@@ -140,57 +153,51 @@ const Login = () => {
         <div className=''>
           <input
             type='email'
-            name='email'
+            // name='email'
             className='border border-bright-blue-200 focus:border-bright-blue-500 focus:shadow-md outline-none p-2 mb-1  rounded-lg duration-150 w-full'
-            placeholder='Email'
+            placeholder='Your email'
             {...register('email', { required: true })}
           />
           <p className='min-h-[1rem] text-red-500 italic pl-2'>
-            {errors.email?.message}
+            {errors.email?.message?.toString()}
           </p>
           <input
             type='password'
-            name='password'
+            // name='password'
             className='border border-bright-blue-200 focus:border-bright-blue-500 focus:shadow-md outline-none p-2 mt-1 rounded-lg duration-150 w-full'
-            placeholder='Password'
+            placeholder='Create a password'
             {...register('password', { required: true })}
           />
           <p className='min-h-[1rem] text-red-500 italic pl-2'>
-            {errors.password?.message}
+            {errors.password?.message?.toString()}
           </p>
-          <div className='flex justify-between items-center text-sm text-slate-500 py-2 '>
-            <div className='flex flex-row-reverse'>
-              <label className=' leading-5 pl-2' forhtml='remember-password'>
-                Remenber me
-              </label>
-              <input
-                type='checkbox'
-                name='remember-password'
-                id='remember-password'
-                className='"'
-              />
-            </div>
-            <div className='underline cursor-pointer hover:text-slate-800 '>
-              Forgot password?
-            </div>
+          <div className=' text-sm text-slate-700 py-2 px-4 cursor-default'>
+            By signing up, you agree to our
+            <Link to='/termofservice' className='text-slate-500 underline px-1'>
+              terms of service
+            </Link>
+            and
+            <Link to='/termofservice' className='text-slate-500 underline px-1'>
+              privacy policy.
+            </Link>
           </div>
         </div>
         <div className='text-center pt-4 text-lg'>
           <Button type='submit' btnType='btn-primary'>
-            Login
+            Sign Up
           </Button>
           <p className='pt-12 text-slate-700'>
-            No Account? Sign up
-            <Link to={'/signup'} className='pl-1 text-bright-blue-700'>
-              Here.
+            Already have an account?
+            <Link to={'/login'} className='pl-1 text-bright-blue-700'>
+              Login.
             </Link>
           </p>
         </div>
-        <ToastContainer autoClose={3000} theme='colored' pauseOnHover='false' />
+        <ToastContainer autoClose={2000} theme='colored' pauseOnHover={false} />
       </form>
       <div></div>
     </div>
   );
 };
 
-export default Login;
+export default SignUp;

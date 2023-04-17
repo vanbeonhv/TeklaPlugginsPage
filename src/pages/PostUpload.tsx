@@ -1,5 +1,5 @@
 import React from 'react';
-import Editor from 'src/components/Editor';
+import Editor from '../components/Editor';
 
 const PostUpload = () => {
   return (
