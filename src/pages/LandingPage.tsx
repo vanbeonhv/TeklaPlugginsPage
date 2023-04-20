@@ -1,72 +1,61 @@
 import { AiFillHeart } from 'react-icons/ai';
 import Button from '../components/Button';
-import { Link } from 'react-router-dom';
-import Card from '../components/Card';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Card, { ICON } from '../components/Card';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useEffect, useState } from 'react';
-import { child, get, getDatabase, ref } from 'firebase/database';
 import { DiCodeigniter } from 'react-icons/di';
+import { v4 as uuidv4 } from 'uuid';
 
-interface ToastMsgProps {
+interface IToastMsg {
   closeToast?: any;
   toastProps?: any;
-  userData: { name?: string };
+  displayName?: string;
 }
-const loginBtn = document.querySelector('.login-button');
 
-const Msg = ({ closeToast, toastProps, userData }: ToastMsgProps) => (
+const Msg = ({ closeToast, toastProps, displayName }: IToastMsg) => (
   <p>
     Hi{' '}
     <span className='text-bright-blue-500 font-medium capitalize'>
-      {userData.name ? userData.name : 'bro!'}
+      {displayName ? displayName : 'bro!'}
     </span>
     <DiCodeigniter className='inline-block pb-2 fill-orange-600 text-lg' />,
     welcome back!
   </p>
 );
 
+const cards = [
+  {
+    iconName: ICON.BLOCK,
+    header: 'diverse',
+    content:
+      'Our target is offering a wide range of applications to suit your every need. But we have just started so more plugins are coming soon!'
+  },
+  {
+    iconName: ICON.FAST,
+    header: 'lightning fast',
+    content:
+      'We understand that time is of the essence. So plugins will help us to work faster'
+  },
+  {
+    iconName: ICON.UPDATE,
+    header: 'update',
+    content:
+      'We constantly updates our plugins store with new and improved versions of existing plugins to meet your needs.'
+  },
+  {
+    iconName: ICON.DOCS,
+    header: 'fully documented',
+    content:
+      'We ensure that all of the apps in our store are fully documented, so you can easily find the information you need to get the most out of plugins'
+  }
+];
 function LandingPage() {
-  const auth = getAuth();
-  const dbRef = ref(getDatabase());
-  const getUserFromDb = async () => {
-    try {
-      const response = await get(child(dbRef, 'users'));
-      if (response.exists()) {
-        const userData = response.val();
-        return userData;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // const [user, setUser] = useState();
-
+  /*
   useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        // setUser(user);
-
-        const uid = user.uid;
-        const userDataList = await getUserFromDb();
-        // debugger;
-        let userData;
-        for (let key in userDataList) {
-          if (userDataList[key].uid === uid) {
-            userData = userDataList[key];
-            console.log(userData);
-            break;
-          }
-        }
-        toast(<Msg userData={userData} />);
-      } else {
-        console.log('user signed out!');
-      }
-    });
+    toast(<Msg displayName={displayName} />);
   }, []);
-
+}
+*/
   return (
     <main className='pt-12 w-full  '>
       <section className='container'>
@@ -120,26 +109,14 @@ function LandingPage() {
             </p>
           </div>
           <div className='flex w-full gap-5 pb-24'>
-            <Card
-              iconName='block'
-              header='diverse'
-              content={`Our target is offering a wide range of applications to suit your every need. But we have just started so more plugins are coming soon!`}
-            />
-            <Card
-              iconName='fast'
-              header='lightning fast'
-              content={`We understand that time is of the essence. So plugins will help us to work faster`}
-            />
-            <Card
-              iconName='update'
-              header='update'
-              content={`We constantly updates our plugins store with new and improved versions of existing plugins to meet your needs.`}
-            />
-            <Card
-              iconName='docs'
-              header='fully documented'
-              content={`We ensure that all of the apps in our store are fully documented, so you can easily find the information you need to get the most out of plugins`}
-            />
+            {cards.map((card) => (
+              <Card
+                key={uuidv4()}
+                iconName={card.iconName}
+                header={card.header}
+                content={card.content}
+              />
+            ))}
           </div>
         </div>
       </section>

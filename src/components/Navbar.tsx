@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { RxCodesandboxLogo } from 'react-icons/rx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from './Button';
 import { BsBell } from 'react-icons/bs';
 import { v4 as uuidv4 } from 'uuid';
+import { getAuth, signOut } from 'firebase/auth';
 
 const Navbar = () => {
-  const user = true;
-
+  const navigate = useNavigate();
+  const [user, setUser] = useState();
   //#region  Handle show sub menu
   let userAvatar: HTMLElement | null;
   let userMenu: HTMLElement | null;
@@ -27,6 +28,11 @@ const Navbar = () => {
     userAvatar = document.querySelector('.user-avatar');
     userMenu = document.querySelector('.user-menu');
     document.addEventListener('click', handleHideMenu);
+
+    const storedUser = localStorage.getItem('userData');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
     return () => {
       document.removeEventListener('click', handleHideMenu);
     };
@@ -73,7 +79,13 @@ const Navbar = () => {
   //#endregion Render Notification
 
   const handleSignOut = () => {
-    console.log('Sign out noti from console! \nPlease add code to handle');
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => console.log('User log out'))
+      .catch((error) => {
+        console.log(error);
+      });
+    navigate('/login');
   };
   return (
     <header className='h-17 fixed w-full p-3 bg-white shadow-md z-50'>

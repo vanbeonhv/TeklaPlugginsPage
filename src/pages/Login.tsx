@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  FieldValue,
-  FieldValues,
-  SubmitHandler,
-  useForm
-} from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
@@ -22,6 +17,7 @@ import { RxCodesandboxLogo } from 'react-icons/rx';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 import Button from '../components/Button';
+import AddUserDataButton from '../components/AddUserDataButton';
 
 const schema = yup.object({
   email: yup
@@ -34,19 +30,18 @@ const schema = yup.object({
     .min(6, 'Passowrd from 6-24 character')
     .max(24, 'Passowrd from 6-24 character')
 });
+
 const Login = () => {
   let navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema) });
 
   const auth = getAuth(app);
   auth.useDeviceLanguage();
   const googleProvider = new GoogleAuthProvider();
-  googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
   const gitHubProvider = new GithubAuthProvider();
   gitHubProvider.addScope('repo');
   gitHubProvider.setCustomParameters({
@@ -56,8 +51,9 @@ const Login = () => {
   const handleGithubLogin = () => {
     signInWithPopup(auth, gitHubProvider)
       .then((result) => {
-        const user = result.user;
-        console.log(user);
+        const credential = GithubAuthProvider.credentialFromResult(result);
+        const accessToken = credential?.accessToken;
+        document.cookie = `accessToken=${accessToken}`;
         navigate('/');
       })
       .catch((error) => {
@@ -65,19 +61,15 @@ const Login = () => {
           position: toast.POSITION.TOP_CENTER
         });
         console.log(`error ${error.code}: ${error.message}`);
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GithubAuthProvider.credentialFromError(error);
-        // ...
       });
   };
+
   const handleGoogleLogin = () => {
     signInWithPopup(auth, googleProvider)
       .then((data) => {
-        // The signed-in user info.
-        const user = data.user;
-        // IdP data available using getAdditionalUserInfo(result)
+        const credential = GoogleAuthProvider.credentialFromResult(data);
+        const accessToken = credential?.accessToken;
+        document.cookie = `accessToken=${accessToken}`;
         navigate('/');
       })
       .catch((error) => {
@@ -87,12 +79,20 @@ const Login = () => {
         console.log(`error ${error.code}: ${error.message}`);
       });
   };
+
+  //handleEmailLogin
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const { email, password } = data;
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
+        user
+          .getIdToken()
+          .then(
+            (accessToken) => (document.cookie = `accessToken=${accessToken}`)
+          )
+          .catch((error) => console.log(error));
+
         navigate('/');
       })
       .catch((error) => {

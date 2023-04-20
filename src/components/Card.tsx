@@ -9,16 +9,24 @@ interface CardProps {
   content: string;
 }
 
+export const ICON = {
+  BLOCK: 'cars',
+  FAST: 'fast',
+  UPDATE: 'update',
+  DOCS: 'docs'
+};
+
 const getIconByName = (iconName: string) => {
   switch (iconName) {
-    case 'block':
+    case ICON.BLOCK:
       return <FaShapes />;
-    case 'fast':
+    case ICON.FAST:
       return <BsFastForwardFill />;
-    case 'update':
+    case ICON.UPDATE:
       return <FaAngleDoubleUp />;
-    case 'docs':
+    case ICON.DOCS:
       return <FaBookOpen />;
+      defaut: return null;
   }
 };
 

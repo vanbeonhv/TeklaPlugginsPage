@@ -17,3 +17,28 @@ export interface IPluginDetail {
 export interface IPlugin {
   [id: string]: IPluginDetail;
 }
+
+interface IUserPlugin {
+  [id: string]: boolean;
+}
+export interface IUser {
+  avatar: string;
+  bio?: string;
+  createAt: number;
+  email: string;
+  name: string;
+  position?: string;
+  uid: string;
+  plugin: IUserPlugin;
+}
+
+export interface IUserResponse {
+  email: string;
+  photoURL?: string;
+  stsTokenManager: {
+    accessToken: string;
+    expirationTime: number;
+    refreshToken: string;
+    uid: string;
+  };
+}
