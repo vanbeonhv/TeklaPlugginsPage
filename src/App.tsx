@@ -24,7 +24,6 @@ const App = () => {
     const storedUser = localStorage.getItem('userData');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
-      console.log(parsedUser);
       //Chưa biết làm gì. Liệu có nên save to state không
     } else {
       onAuthStateChanged(auth, async (user) => {
