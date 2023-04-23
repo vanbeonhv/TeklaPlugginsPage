@@ -1,10 +1,11 @@
 import React from 'react';
 import Footer from '../components/Footer';
+import { Outlet } from 'react-router-dom';
 
-const LoginLayout = ({ children }: { children: React.ReactNode }) => {
+const LoginLayout = () => {
   return (
     <>
-      {children}
+      <Outlet />
       <Footer />
     </>
   );

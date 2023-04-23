@@ -11,7 +11,7 @@ export interface IPluginDetail {
   image?: string[];
   tags?: string[];
   youtubeId?: string;
-  createAt?: number;
+  createdAt?: number;
 }
 
 export interface IPlugin {
@@ -26,10 +26,14 @@ export interface IUser {
   bio?: string;
   createAt: number;
   email: string;
-  name: string;
+  name?: string;
   position?: string;
   uid: string;
   plugin: IUserPlugin;
+}
+
+export interface IUsers {
+  [id: string]: IUser;
 }
 
 export interface IUserResponse {

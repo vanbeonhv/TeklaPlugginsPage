@@ -5,7 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { DiCodeigniter } from 'react-icons/di';
 import { v4 as uuidv4 } from 'uuid';
-
+import app from '../../firebase';
 interface IToastMsg {
   closeToast?: any;
   toastProps?: any;
@@ -53,7 +53,7 @@ function LandingPage() {
   /*
   useEffect(() => {
     toast(<Msg displayName={displayName} />);
-  }, []);
+  }, [displayName]);
 }
 */
   return (

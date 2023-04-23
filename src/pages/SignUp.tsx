@@ -110,6 +110,7 @@ const SignUp = () => {
         console.log(`error ${error.code}: ${error.message}`);
       });
   };
+
   return (
     <div className='flex justify-center items-center flex-col bg-bright-blue-100 h-[calc(100vh-112px)]'>
       <Link to='/'>

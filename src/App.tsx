@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import './App.css';
-import useRouteElements from './pages/useRouteElements';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  browserLocalPersistence,
+  getAuth,
+  onAuthStateChanged
+} from 'firebase/auth';
 import {
   equalTo,
   get,
@@ -10,58 +13,117 @@ import {
   query,
   ref
 } from 'firebase/database';
-import { IUser } from './types/types';
-import { json } from 'react-router-dom';
+import { IUser, IUsers } from './types/types';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import MainLayout from './layouts/MainLayout';
+import LandingPage from './pages/LandingPage';
+import Plugins from './pages/Plugins';
+import app from '../firebase';
+import PluginDetail from './pages/PluginDetail';
+import Pricing from './pages/Pricing';
+import About from './pages/About';
+import Upload from './pages/Upload';
+import Policy from './pages/Policy';
+import TermOfService from './pages/TermOfService';
+import PostUpload from './pages/PostUpload';
+import Dashboard from './pages/Dashboard';
+import ReadingList from './pages/ReadingList';
+import Settings from './pages/Settings';
+import LoginLayout from './layouts/LoginLayout';
+import SignUp from './pages/SignUp';
+import Login from './pages/Login';
+import NewAccount from './pages/NewAccount';
+import Test from './pages/Test';
 
-const auth = getAuth();
+const auth = getAuth(app);
 const db = getDatabase();
 const dbRef = ref(getDatabase());
 
 const App = () => {
-  const routeElement = useRouteElements();
+  const router = createBrowserRouter([
+    {
+      element: <MainLayout />,
+      children: [
+        {
+          path: '/',
+          element: <LandingPage />
+        },
+        {
+          path: '/plugins',
+          element: <Plugins />
+        },
+        {
+          path: '/plugins/:id',
+          element: <PluginDetail />
+        },
+        {
+          path: '/pricing',
+          element: <Pricing />
+        },
+        {
+          path: '/about',
+          element: <About />
+        },
+        {
+          path: '/upload',
+          element: <Upload />
+        },
+        {
+          path: '/policy',
+          element: <Policy />
+        },
+        {
+          path: '/termofservice',
+          element: <TermOfService />
+        },
+        {
+          path: '/post-upload',
+          element: <PostUpload />
+        },
+        {
+          path: '/dashboard',
+          element: <Dashboard />
+        },
+        {
+          path: '/reading-list',
+          element: <ReadingList />
+        },
+        {
+          path: '/settingst',
+          element: <Settings />
+        },
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('userData');
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      //Chưa biết làm gì. Liệu có nên save to state không
-    } else {
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          const uid = user.uid;
-          const queryUser = query(
-            ref(db, 'users'),
-            orderByChild('uid'),
-            equalTo(uid)
-          );
-
-          let userFetch: IUser = {
-            avatar: '',
-            bio: '',
-            createAt: 0,
-            email: '',
-            name: '',
-            position: '',
-            uid: '',
-            plugin: {}
-          };
-          let userData;
-          await get(queryUser)
-            .then((snapshot) => {
-              userFetch = snapshot.val();
-              userData = Object.values(userFetch)[0];
-              localStorage.setItem('userData', JSON.stringify(userData));
-            })
-            .catch((e) => console.log('errors:', e));
-        } else {
-          localStorage.removeItem('userData');
-          console.log('user signed out!');
+        {
+          path: '/test',
+          element: <Test />
         }
-      });
-    }
-  }, []);
+      ]
+    },
+    {
+      element: <LoginLayout />,
+      children: [
+        {
+          path: '/signup',
+          element: <SignUp />
+        },
 
-  return <div>{routeElement}</div>;
+        {
+          path: '/login',
+          element: <Login />
+        },
+        {
+          path: '/new-account',
+          element: <NewAccount />
+        },
+        {
+          path: '/signup',
+          element: <SignUp />
+        }
+      ]
+    }
+  ]);
+
+  return <RouterProvider router={router} />;
 };
 
 export default App;

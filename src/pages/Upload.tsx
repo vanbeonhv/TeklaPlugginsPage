@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import axios from 'axios';
 import Button from '../components/Button';
-import app from '../../firebase';
 import { getDatabase, push, ref } from 'firebase/database';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -129,25 +128,6 @@ const Upload = () => {
   };
 
   const db = getDatabase();
-  const handleImageUpload = () => {
-    const imgFormData = new FormData();
-    imgFormData.append('file', imgFile as Blob);
-    imgFormData.append('upload_preset', 'zlqfvhpn');
-    const uploadImage = async () => {
-      // const response = await axios({
-      //   method: 'post',
-      //   url: 'https://api.cloudinary.com/v1_1/dff6kiqfh/image/upload',
-      //   data: imgFormData
-      // });
-
-      setFormData((formData) => ({
-        ...formData,
-        thumbnail: 'api.test.com/v1_1'
-        // thumbnail: response.data.url
-      }));
-    };
-    uploadImage();
-  };
 
   const onSubmit = async () => {
     const imgFormData = new FormData();
@@ -168,7 +148,7 @@ const Upload = () => {
       // thumbnail: 'api.test.com/v1_1',
       thumbnail: response.data.url,
       tags: tags,
-      createAt: Date.now()
+      createdAt: Date.now()
     });
 
     await push(ref(db, 'plugins'), formData)

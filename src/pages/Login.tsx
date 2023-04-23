@@ -17,7 +17,9 @@ import { RxCodesandboxLogo } from 'react-icons/rx';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 import Button from '../components/Button';
-import AddUserDataButton from '../components/AddUserDataButton';
+import { getUserData } from '../utils/UserData';
+import { saveAccessTokenToCookie } from '../utils/LocalCache';
+import { useUserInforStore } from '../store/userStore';
 
 const schema = yup.object({
   email: yup
@@ -33,6 +35,8 @@ const schema = yup.object({
 
 const Login = () => {
   let navigate = useNavigate();
+  const { updateUserInfor } = useUserInforStore();
+
   const {
     register,
     handleSubmit,
@@ -86,14 +90,18 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+        const uid = user.uid;
         user
           .getIdToken()
-          .then(
-            (accessToken) => (document.cookie = `accessToken=${accessToken}`)
-          )
+          .then((accessToken) => {
+            saveAccessTokenToCookie(accessToken);
+          })
+          .then(async () => {
+            const userData = await getUserData(uid);
+            updateUserInfor(userData);
+          })
+          .then(() => navigate('/'))
           .catch((error) => console.log(error));
-
-        navigate('/');
       })
       .catch((error) => {
         toast.error('Invalid username/password!', {
@@ -172,7 +180,7 @@ const Login = () => {
                 type='checkbox'
                 name='remember-password'
                 id='remember-password'
-                className='"'
+                className=''
               />
             </div>
             <div className='underline cursor-pointer hover:text-slate-800 '>
