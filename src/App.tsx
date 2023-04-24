@@ -1,20 +1,11 @@
-import React, { useEffect } from 'react';
 import './App.css';
+
+import { getDatabase, ref } from 'firebase/database';
 import {
-  browserLocalPersistence,
-  getAuth,
-  onAuthStateChanged
-} from 'firebase/auth';
-import {
-  equalTo,
-  get,
-  getDatabase,
-  orderByChild,
-  query,
-  ref
-} from 'firebase/database';
-import { IUser, IUsers } from './types/types';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+  RouterProvider,
+  createBrowserRouter,
+  useRouteError
+} from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import LandingPage from './pages/LandingPage';
 import Plugins from './pages/Plugins';
@@ -34,6 +25,8 @@ import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import NewAccount from './pages/NewAccount';
 import Test from './pages/Test';
+import { getAuth } from 'firebase/auth';
+import ErrorBoundary from './pages/ErrorBoundary';
 
 const auth = getAuth(app);
 const db = getDatabase();
@@ -89,7 +82,7 @@ const App = () => {
           element: <ReadingList />
         },
         {
-          path: '/settingst',
+          path: '/settings',
           element: <Settings />
         },
 
@@ -97,7 +90,8 @@ const App = () => {
           path: '/test',
           element: <Test />
         }
-      ]
+      ],
+      errorElement: <ErrorBoundary />
     },
     {
       element: <LoginLayout />,
@@ -114,10 +108,6 @@ const App = () => {
         {
           path: '/new-account',
           element: <NewAccount />
-        },
-        {
-          path: '/signup',
-          element: <SignUp />
         }
       ]
     }

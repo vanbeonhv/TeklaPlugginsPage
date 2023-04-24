@@ -3,7 +3,7 @@ import { RxCodesandboxLogo } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 import Button from './Button';
 import UserNavBar from './UserNavBar';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 const navLinks = ['plugins', 'pricing', 'about'];
 
@@ -47,13 +47,17 @@ const Navbar = () => {
         </div>
         <div className='h-full'>
           <ul className='flex flex-endtext-lg text-gray-600 capitalize cursor-pointer font-medium h-full text-xl'>
-            {navLinks.map(navLink => {
-return (
-              <li key={uuidv4()} className='p-2 hover:text-black mr-2 inline-block' >
-              <Link to={/${navLink}}>{navLink}</Link>
-            </li>)
-              })}
-            
+            {navLinks.map((navLink) => {
+              return (
+                <li
+                  key={uuidv4()}
+                  className='p-2 hover:text-black mr-2 inline-block'
+                >
+                  <Link to={`/${navLink}`}>{navLink}</Link>
+                </li>
+              );
+            })}
+
             {user ? (
               <UserNavBar />
             ) : (
@@ -61,13 +65,6 @@ return (
                 Login
               </Button>
             )}
-            {navLinks.map(link => {
-              return (
-                <li key={link}>
-                  <Link to={/${link}}>{link}</Link>
-                </li>
-              )
-            })}
           </ul>
         </div>
       </nav>
