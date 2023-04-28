@@ -12,7 +12,6 @@ import { getAuth } from 'firebase/auth';
 import { IUser, IUsers } from '../types/types';
 import { saveUserIdToLocal } from './LocalCache';
 import { defaultUserInfor } from '../types/DefaultValue';
-import { useUserInforStore } from '../store/userStore';
 
 const auth = getAuth(app);
 const db = getDatabase();

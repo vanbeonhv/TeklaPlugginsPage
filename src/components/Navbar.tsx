@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RxCodesandboxLogo } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 import Button from './Button';
 import UserNavBar from './UserNavBar';
 import { v4 as uuidv4 } from 'uuid';
+import { useUserInforStore } from '../store/userStore';
+import { IUser } from '../types/types';
+import { defaultUserInfor } from '../types/DefaultValue';
 
 const navLinks = ['plugins', 'pricing', 'about'];
 
 const Navbar = () => {
-  const storedUser = localStorage.getItem('currentUserId');
-  let parsedUser;
-  if (storedUser) {
-    parsedUser = JSON.parse(storedUser);
-  }
-  const [user, setUser] = useState(parsedUser);
+  const [user, setUser] = useState<IUser>(defaultUserInfor);
+  const { userInfor } = useUserInforStore();
+  useEffect(() => {
+    setUser(userInfor);
+  }, [userInfor]);
 
-  console.log('re-render');
+  console.log('user from Navbar', user);
   return (
     <header className='h-17 fixed w-full p-3 bg-white shadow-md z-50'>
       <nav className=' flex justify-between items-center h-full'>

@@ -60,17 +60,12 @@ const UserNavBar = () => {
 
   useEffect(() => {
     if (notiModal.current) {
-      console.log('test');
+      // console.log(notiModal.current);
     }
-    // notiModal.current = document.querySelector('.noti-modal');
-  }, [notiModal]);
-  // console.log(notiModal.current);
+  }, []);
 
   const notiToggle = () => {
-    setShowNoti(!showNoti);
-    if (showUserMenu) {
-      setShowUserMenu(false);
-    }
+    notiModal.current?.classList.toggle('hidden');
   };
 
   //#endregion Render Notification
@@ -96,7 +91,7 @@ const UserNavBar = () => {
         <BsBell className='' />
         <div className=''>
           <ul
-            className='absolute top-12 right-0 border-bright-blue-200 rounded-md bg-white border min-w-[300px] text-base font-normal p-2 shadow-lg noti-modal'
+            className='absolute top-12 right-0 border-bright-blue-200 rounded-md bg-white border min-w-[300px] text-base font-normal p-2 shadow-lg hidden'
             ref={(el) => (notiModal.current = el)}
           >
             {noti.map((noti) => {

@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { DiCodeigniter } from 'react-icons/di';
 import { v4 as uuidv4 } from 'uuid';
 import app from '../../firebase';
+import { useUserInforStore } from '../store/userStore';
+import { useEffect } from 'react';
 interface IToastMsg {
   closeToast?: any;
   toastProps?: any;
@@ -50,12 +52,10 @@ const cards = [
   }
 ];
 function LandingPage() {
-  /*
-  useEffect(() => {
-    toast(<Msg displayName={displayName} />);
-  }, [displayName]);
-}
-*/
+  // useEffect(() => {
+  //   toast(<Msg displayName={displayName} />);
+  // }, [displayName]);
+
   return (
     <main className='pt-12 w-full  '>
       <section className='container'>
