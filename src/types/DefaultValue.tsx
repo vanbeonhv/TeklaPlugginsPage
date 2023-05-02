@@ -1,16 +1,6 @@
-import { IdTokenResult } from 'firebase/auth';
 import { IUser } from './types';
 
-// const defaultIdTokenResult: IdTokenResult = {
-//   authTime: '',
-//   expirationTime: '',
-//   issuedAtTime:
-//   signInProvider:
-//   signInSecondFactor:
-//   token: ''
-// };
-
-export const defaultUserInfor: IUser = {
+export const defaultUserInfor: IUser = null || {
   avatar: '',
   bio: '',
   createAt: 0,

@@ -1,23 +1,17 @@
-import React, { useEffect, useState } from 'react';
 import { RxCodesandboxLogo } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 import Button from './Button';
-import UserNavBar from './UserNavBar';
+
 import { v4 as uuidv4 } from 'uuid';
-import { useUserInforStore } from '../store/userStore';
-import { IUser } from '../types/types';
-import { defaultUserInfor } from '../types/DefaultValue';
+import useUserData from '../hooks/useUserData';
+import UserNavBar from './UserNavBar';
 
 const navLinks = ['plugins', 'pricing', 'about'];
 
 const Navbar = () => {
-  const [user, setUser] = useState<IUser>(defaultUserInfor);
-  const { userInfor } = useUserInforStore();
-  useEffect(() => {
-    setUser(userInfor);
-  }, [userInfor]);
-
-  console.log('user from Navbar', user);
+  const userInfor = useUserData();
+  const { name, position, avatar } = userInfor;
+  console.log(userInfor);
   return (
     <header className='h-17 fixed w-full p-3 bg-white shadow-md z-50'>
       <nav className=' flex justify-between items-center h-full'>
@@ -60,8 +54,12 @@ const Navbar = () => {
               );
             })}
 
-            {user ? (
-              <UserNavBar />
+            {userInfor?.email ? (
+              <UserNavBar
+                displayName={name}
+                position={position}
+                avatar={avatar}
+              />
             ) : (
               <Button type='login-button' linkTo='/login' btnType='btn-primary'>
                 Login

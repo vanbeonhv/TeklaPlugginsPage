@@ -34,8 +34,13 @@ export const getUserData = async (uid: string): Promise<IUser> => {
 };
 
 export const removeUserData = () => {
-  localStorage.removeItem('userData');
+  localStorage.removeItem('currentUserId');
   document.cookie =
     'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  document.cookie.split(';').forEach((c) => {
+    document.cookie = c
+      .replace(/^ +/, '')
+      .replace(/=.*/, '=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;');
+  });
   console.log('user signed out!');
 };

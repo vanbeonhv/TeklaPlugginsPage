@@ -1,3 +1,5 @@
+import { MutableRefObject } from 'react';
+
 export interface IPluginDetail {
   author: string;
   time?: string;
@@ -45,4 +47,11 @@ export interface IUserResponse {
     refreshToken: string;
     uid: string;
   };
+}
+
+export interface IAdjustClass {
+  element: MutableRefObject<Element | null>;
+  class0: string;
+  class1: string;
+  class2?: string;
 }

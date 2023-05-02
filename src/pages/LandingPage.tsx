@@ -6,8 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { DiCodeigniter } from 'react-icons/di';
 import { v4 as uuidv4 } from 'uuid';
 import app from '../../firebase';
-import { useUserInforStore } from '../store/userStore';
-import { useEffect } from 'react';
 interface IToastMsg {
   closeToast?: any;
   toastProps?: any;

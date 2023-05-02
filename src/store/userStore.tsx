@@ -1,21 +1,14 @@
 import { create } from 'zustand';
 import { IUser } from '../types/types';
 import { defaultUserInfor } from '../types/DefaultValue';
-import { getDataFromLocal } from '../utils/LocalCache';
 import { getUserData } from '../utils/UserData';
-import { useEffect } from 'react';
 
 async function fetchUserData(userId: string) {
   userData = await getUserData(userId);
-
   console.log('userData data from store: ', userData);
 }
 
 let userData: IUser = defaultUserInfor;
-const userId = getDataFromLocal('currentUserId');
-if (userId) {
-  fetchUserData(userId);
-}
 
 //User State
 interface IUserState {
