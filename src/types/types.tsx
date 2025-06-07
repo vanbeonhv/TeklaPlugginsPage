@@ -14,6 +14,9 @@ export interface IPluginDetail {
   tags?: string[];
   youtubeId?: string;
   createdAt?: number;
+  downloads?: number;
+  rating?: number;
+  version?: string;
 }
 
 export interface IPlugin {

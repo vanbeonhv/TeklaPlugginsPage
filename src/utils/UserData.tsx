@@ -1,46 +1,51 @@
-import React from 'react';
-import {
-  equalTo,
-  get,
-  getDatabase,
-  orderByChild,
-  query,
-  ref
-} from 'firebase/database';
-import app from '../../firebase';
-import { getAuth } from 'firebase/auth';
-import { IUser, IUsers } from '../types/types';
-import { saveUserIdToLocal } from './LocalCache';
+import { IUser } from '../types/types';
 import { defaultUserInfor } from '../types/DefaultValue';
-
-const auth = getAuth(app);
-const db = getDatabase();
+import { mockAuth } from '../dummyData/mockData';
 
 export const getUserData = async (uid: string): Promise<IUser> => {
-  const queryUser = query(ref(db, 'users'), orderByChild('uid'), equalTo(uid));
+  try {
+    // Get the currently signed-in user from our mock auth
+    const currentUser = mockAuth.getCurrentUser();
+    if (!currentUser || currentUser.id !== uid) {
+      return defaultUserInfor;
+    }
 
-  let userData: IUser = defaultUserInfor;
-  await get(queryUser)
-    .then((snapshot) => {
-      const userFetch: IUsers = snapshot.val();
-      userData = Object.values(userFetch)[0];
-      const currentUserId = JSON.stringify(userData.uid);
-      saveUserIdToLocal(currentUserId);
+    // Create a user data object that matches IUser interface
+    const userData: IUser = {
+      uid: currentUser.id,
+      email: currentUser.email,
+      avatar: currentUser.avatar ?? 'https://api.multiavatar.com/default.png',
+      name: currentUser.name ?? currentUser.email.split('@')[0],
+      createAt: Date.now(),
+      plugin: {}, // Initialize with empty plugin object
+      bio: '',    // Optional field
+      position: '' // Optional field
+    };
 
-      return userData;
-    })
-    .catch((e) => console.log('errors:', e));
-  return userData;
+    // Store user ID in local storage
+    localStorage.setItem('currentUserId', JSON.stringify(userData.uid));
+
+    return userData;
+  } catch (error) {
+    console.error('Error getting user data:', error);
+    return defaultUserInfor;
+  }
 };
 
 export const removeUserData = () => {
-  localStorage.removeItem('currentUserId');
-  document.cookie =
-    'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-  document.cookie.split(';').forEach((c) => {
-    document.cookie = c
-      .replace(/^ +/, '')
-      .replace(/=.*/, '=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;');
-  });
-  console.log('user signed out!');
+  try {
+    // Remove user data from local storage
+    localStorage.removeItem('currentUserId');
+
+    // Clear all cookies
+    document.cookie.split(';').forEach(cookie => {
+      document.cookie = cookie
+        .replace(/^ +/, '')
+        .replace(/=.*/, `=;expires=${new Date(0).toUTCString()};path=/`);
+    });
+
+    console.log('User data successfully removed');
+  } catch (error) {
+    console.error('Error removing user data:', error);
+  }
 };

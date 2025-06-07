@@ -4,10 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { removeUserData } from '../utils/UserData';
 import { defaultUserInfor } from '../types/DefaultValue';
-import { getAuth, signOut } from 'firebase/auth';
 import { useUserInforStore } from '../store/userStore';
 import { IAdjustClass, IUser } from '../types/types';
 import { superRemoveClass, superToggleClass } from '../utils/AdjustClass';
+import { mockAuth } from '../dummyData/mockData';
 
 interface IUserMenuInfo {
   displayName?: string;
@@ -109,17 +109,15 @@ const UserNavBar = ({ displayName, position, avatar }: IUserMenuInfo) => {
 
   //#endregion Sub user menu
 
-  const handleSignOut = () => {
-    const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        removeUserData();
-        updateUserInfor(defaultUserInfor);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    navigate('/login');
+  const handleSignOut = async () => {
+    try {
+      await mockAuth.signOut();
+      removeUserData();
+      updateUserInfor(defaultUserInfor);
+      navigate('/login');
+    } catch (error) {
+      console.log(error);
+    };
   };
 
   return (
@@ -177,12 +175,13 @@ const UserNavBar = ({ displayName, position, avatar }: IUserMenuInfo) => {
                 </Link>
               </li>
             ))}
-            <li
-              className='px-4 py-2 border-t-[1px] hover:bg-bright-blue-125 hover:underline hover:text-red-600 mb-1 
-            '
-              onClick={handleSignOut}
-            >
-              Sign out
+            <li className='border-t-[1px] mb-1'>
+              <button
+                className='w-full text-left px-4 py-2 hover:bg-bright-blue-125 hover:underline hover:text-red-600'
+                onClick={handleSignOut}
+              >
+                Sign out
+              </button>
             </li>
           </ul>
         </div>

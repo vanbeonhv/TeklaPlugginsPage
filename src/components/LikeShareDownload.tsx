@@ -37,7 +37,7 @@ const LikeShareDownload = ({
         <Link to={pluginDetail ? pluginDetail.file : ''} target='_blank'>
           <HiOutlineDownload className='text-2xl cusror-pointer delay-75 hover:text-blue-600 ' />
         </Link>
-        <p className='text-slate-600'>0</p>
+        <p className='text-slate-600'>{pluginDetail.downloads}</p>
       </div>
     </div>
   );

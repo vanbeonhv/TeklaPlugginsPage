@@ -1,25 +1,16 @@
 import React from 'react';
-import { FieldValues, SubmitHandler, set, useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Button from '../components/Button';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import app from '../../firebase';
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  signInWithPopup
-} from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import { RxCodesandboxLogo } from 'react-icons/rx';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
-import { child, getDatabase, push, ref } from 'firebase/database';
+import { useAuth } from '../dummyData/AuthContext';
 
-const db = getDatabase();
 const schema = yup.object({
   email: yup
     .string()
@@ -27,88 +18,68 @@ const schema = yup.object({
     .required('Please enter email'),
   password: yup
     .string()
-    .required('Passowrd from 6-24 character')
-    .min(6, 'Passowrd from 6-24 character')
-    .max(24, 'Passowrd from 6-24 character')
+    .required('Password from 6-24 characters')
+    .min(6, 'Password from 6-24 characters')
+    .max(24, 'Password from 6-24 characters')
 });
+
 const SignUp = () => {
   let navigate = useNavigate();
+  const { signUp } = useAuth();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema) });
 
-  const auth = getAuth(app);
-  auth.useDeviceLanguage();
-  const googleProvider = new GoogleAuthProvider();
-  googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-  const gitHubProvider = new GithubAuthProvider();
-  gitHubProvider.addScope('repo');
-  gitHubProvider.setCustomParameters({
-    allow_signup: 'false'
-  });
+  const handleGithubLogin = async () => {
+    try {
+      // For demo, we'll use a hardcoded GitHub email
+      await signUp('github@example.com', 'github123');
+      toast.success('Signed up with GitHub successfully!', {
+        position: toast.POSITION.TOP_CENTER
+      });
+      navigate('/');
+    } catch (error) {
+      toast.error('Failed to sign up with GitHub!', {
+        position: toast.POSITION.TOP_CENTER
+      });
+      console.error(error);
+    }
+  };
 
-  const handleGithubLogin = () => {
-    signInWithPopup(auth, gitHubProvider)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-        navigate('/');
-      })
-      .catch((error) => {
-        toast.error('Invalid username/password!', {
-          position: toast.POSITION.TOP_CENTER
-        });
-        console.log(`error ${error.code}: ${error.message}`);
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GithubAuthProvider.credentialFromError(error);
-        // ...
+  const handleGoogleLogin = async () => {
+    try {
+      // For demo, we'll use a hardcoded Google email
+      await signUp('google@example.com', 'google123');
+      toast.success('Signed up with Google successfully!', {
+        position: toast.POSITION.TOP_CENTER
       });
-  };
-  const handleGoogleLogin = () => {
-    signInWithPopup(auth, googleProvider)
-      .then((data) => {
-        // The signed-in user info.
-        const user = data.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        navigate('/');
-      })
-      .catch((error) => {
-        toast.error('Invalid username/password!', {
-          position: toast.POSITION.TOP_CENTER
-        });
-        console.log(`error ${error.code}: ${error.message}`);
+      navigate('/');
+    } catch (error) {
+      toast.error('Failed to sign up with Google!', {
+        position: toast.POSITION.TOP_CENTER
       });
+      console.error(error);
+    }
   };
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const { email, password } = data;
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const userId = userCredential.user.uid;
-        push(ref(db, `users`), {
-          email: email,
-          avatar: 'https://api.multiavatar.com/default.png',
-          uid: userId,
-          createAt: Date.now()
-        }).then(() => {
-          toast.success('Sign up successfully!', {
-            position: toast.POSITION.TOP_CENTER
-          });
-          setTimeout(() => {
-            navigate('/new-account');
-          }, 2000);
-        });
-      })
-      .catch((error) => {
-        toast.error(`Sign up false. Error: ${error.code}`, {
-          position: toast.POSITION.TOP_CENTER
-        });
-        console.log(`error ${error.code}: ${error.message}`);
+    try {
+      await signUp(email, password);
+      toast.success('Sign up successfully!', {
+        position: toast.POSITION.TOP_CENTER
       });
+      setTimeout(() => {
+        navigate('/new-account');
+      }, 2000);
+    } catch (error) {
+      toast.error('Create Failed Try Again!', {
+        position: toast.POSITION.TOP_CENTER
+      });
+      console.error(error);
+    }
   };
 
   return (
@@ -118,7 +89,7 @@ const SignUp = () => {
           <RxCodesandboxLogo className='text-4xl text-bright-blue-500 m-2' />
           <span className='text-3xl font-bold text-gray-800'>
             Marc
-            <span className='font-extralight text-gray-600'>Pro</span>
+            <span className="font-extralight text-gray-600">Pro</span>
           </span>
         </div>
       </Link>

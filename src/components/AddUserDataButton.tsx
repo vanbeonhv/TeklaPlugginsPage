@@ -1,12 +1,10 @@
 import React from 'react';
 import Button from './Button';
-import { child, getDatabase, push, ref } from 'firebase/database';
 import { IUser } from '../types/types';
 
-//Component to add new user info to database
+//Component to add new user info to local storage
 
 const AddUserDataButton = ({ uid }: { uid: string }) => {
-  const db = getDatabase();
   const userInfor: IUser = {
     avatar: 'https://api.multiavatar.com/default-user.png',
     bio: 'This is a test user',
@@ -19,11 +17,19 @@ const AddUserDataButton = ({ uid }: { uid: string }) => {
   };
 
   const handleClick = () => {
-    push(child(ref(db), 'users'), userInfor)
-      .then(() => console.log('Added user to database'))
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      // Get existing users or initialize empty array
+      const usersData = JSON.parse(localStorage.getItem('users') ?? '[]');
+      
+      // Add new user
+      usersData.push(userInfor);
+      
+      // Save back to localStorage
+      localStorage.setItem('users', JSON.stringify(usersData));
+      console.log('Added user to local storage');
+    } catch (error) {
+      console.error('Error adding user:', error);
+    }
   };
 
   return (

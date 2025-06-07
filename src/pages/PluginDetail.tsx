@@ -1,65 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { IPluginDetail, IUser } from '../types/types';
-import { getDatabase, ref, child, get } from 'firebase/database';
 import UserCard from '../components/UserCard';
 import ImageCard from '../components/ImageCard';
 import LikeShareDownload from '../components/LikeShareDownload';
 import Article from '../components/Article';
 import moment from 'moment';
+import { dummyPlugins, dummyUsers } from '../dummyData/pluginData';
 
 const PluginDetail = () => {
   const { id } = useParams();
-  const [pluginDetail, setPluginDetail] = useState<IPluginDetail>({
-    author: '',
-    heading: '',
-    description: '',
-    name: '',
-    thumbnail: '',
-    title: '',
-    file: '',
-    content: [],
-    image: [],
-    tags: [],
-    youtubeId: ''
-  });
+  // Initialize with the first dummy plugin
+  const [pluginDetail, setPluginDetail] = useState<IPluginDetail>(dummyPlugins[0]);
+  const [authorInfo, setAuthorInfo] = useState<IUser>(dummyUsers[0]);
 
-  const [authorInfo, setAuthorInfo] = useState<IUser>({
-    avatar: '',
-    bio: '',
-    createAt: 0,
-    email: '',
-    name: '',
-    position: '',
-    uid: '',
-    plugin: {}
-  });
-
-  const db = getDatabase();
-  const dbRef = ref(db);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    get(child(dbRef, `plugins/${id}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          setPluginDetail(snapshot.val());
-        }
-        const pluginAuthor = snapshot.val().author;
+    try {
+      // Get plugin details
+      // const pluginData = localStorage.getItem(id ?? '');
+      // if (!pluginData) {
+      //   console.error('Plugin not found');
+      //   navigate('/plugins');
+      //   return;
+      // }
 
-        get(child(dbRef, 'users')).then((snapshot) => {
-          const users = snapshot.val();
-          for (let user in users) {
-            if (users[user].name === pluginAuthor) {
-              setAuthorInfo(users[user]);
-              break;
-            }
-          }
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+      // const plugin = JSON.parse(pluginData);
+      // setPluginDetail(plugin);
+
+      // Get author info
+      const usersData = JSON.parse(localStorage.getItem('users') ?? '[]');
+      const author = usersData.find((user: IUser) => user.name === authorInfo.name);
+
+      if (author) {
+        setAuthorInfo(author);
+      }
+    } catch (error) {
+      console.error('Error loading plugin details:', error);
+      navigate('/plugins');
+    }
+  }, [id, navigate]);
 
   const { author, createdAt } = pluginDetail;
 
@@ -71,18 +52,12 @@ const PluginDetail = () => {
         </aside>
         <main className='col-span-8 bg-white py-8 px-16 mx-4 rounded-md border border-slate-200'>
           <section className='flex justify-start items-center'>
-            <img
-              src={authorInfo?.avatar}
-              alt='avatar'
-              className='h-10 rounded-full'
-            />
+            <img src={authorInfo?.avatar} alt='avatar' className='h-10 rounded-full' />
             <div className='ml-3'>
               <h5 className='text-sm font-bold capitalize'>{author}</h5>
               <div className='flex text-gray-500 text-xs '>
                 <p>Posted on </p>
-                <p className='pl-1'>
-                  {moment(createdAt).format('MMMM Do YYYY, h:mm:ss a')}
-                </p>
+                <p className='pl-1'>{moment(createdAt).format('MMMM Do YYYY, h:mm:ss a')}</p>
               </div>
             </div>
           </section>

@@ -8,6 +8,7 @@ import Loading from './Loading';
 
 const Article = ({ pluginDetail }: { pluginDetail: IPluginDetail }) => {
   const { heading, content, image, tags, youtubeId } = pluginDetail;
+  console.log("🚀 ~ Article ~ pluginDetail:", pluginDetail)
   return (
     <>
       <header className='title'>

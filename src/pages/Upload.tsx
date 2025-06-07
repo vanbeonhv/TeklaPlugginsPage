@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import axios from 'axios';
 import Button from '../components/Button';
-import { getDatabase, push, ref } from 'firebase/database';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { HiDownload, HiOutlineDocumentAdd } from 'react-icons/hi';
@@ -40,13 +39,15 @@ const schema = yup.object({
 
   file: yup
     .string()
-    .required('File link from 6-24 character')
-    .min(6, 'File link from 6-24 character'),
+    .required('Please enter the plugin file URL')
+    .min(6, 'File URL must be at least 6 characters')
+    .url('Please enter a valid URL'),
 
   description: yup
     .string()
-    .required('Description from 6-24 character')
-    .min(6, 'Description from 6-24 character')
+    .required('Description is required')
+    .min(10, 'Description must be at least 10 characters')
+    .max(1000, 'Description must be less than 1000 characters')
 });
 
 const suggestions = pluginTags.map((tag) => {
@@ -127,38 +128,55 @@ const Upload = () => {
     reader.readAsDataURL(e.target.files?.[0] as Blob);
   };
 
-  const db = getDatabase();
-
   const onSubmit = async () => {
-    const imgFormData = new FormData();
-    imgFormData.append('file', imgFile as Blob);
-    imgFormData.append('upload_preset', 'zlqfvhpn');
-    const response = await axios({
-      method: 'post',
-      url: 'https://api.cloudinary.com/v1_1/dff6kiqfh/image/upload',
-      data: imgFormData
-    });
-    const tags = [];
-    for (let tag of tagList) {
-      tags.push(tag.text);
-    }
+    try {
+      if (!imgFile) {
+        toast.error('Please select an image file');
+        return;
+      }
 
-    setFormData({
-      ...formData,
-      // thumbnail: 'api.test.com/v1_1',
-      thumbnail: response.data.url,
-      tags: tags,
-      createdAt: Date.now()
-    });
+      // Convert tags
+      const tags = tagList.map(tag => tag.text);
 
-    await push(ref(db, 'plugins'), formData)
-      .then(() => {
-        toast.success('upload sucessfully!');
-      })
-      .catch(() => {
-        toast.error('upload false!');
+      // Use the base64 image data directly
+      const updatedFormData = {
+        ...formData,
+        thumbnail: base64Image as string,  // Already converted to base64 by handleImage
+        tags: tags,
+        createdAt: Date.now(),
+        downloads: 0,
+        rating: 0,
+        version: '1.0.0'
+      };
+
+      // Store in localStorage with a unique ID
+      const pluginId = `plugin_${Date.now()}`;
+      localStorage.setItem(pluginId, JSON.stringify(updatedFormData));
+
+      // Update plugins index
+      const pluginsIndex = JSON.parse(localStorage.getItem('plugins_index') || '[]');
+      pluginsIndex.push(pluginId);
+      localStorage.setItem('plugins_index', JSON.stringify(pluginsIndex));
+
+      toast.success('Plugin uploaded successfully!');
+      console.log('Plugin data:', updatedFormData);
+
+      // Reset form
+      setFormData({
+        author: '',
+        name: '',
+        thumbnail: '',
+        file: '',
+        description: '',
+        tags: []
       });
-    console.log(formData);
+      setTagList([{ id: 'Tekla', text: 'Tekla' }]);
+      setBase64Image(null);
+      setImgFile(undefined);
+    } catch (error) {
+      console.error('Error uploading plugin:', error);
+      toast.error('Failed to upload plugin. Please try again.');
+    }
     //reset
     setFormData({
       author: '',
