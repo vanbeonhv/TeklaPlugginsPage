@@ -7,6 +7,16 @@ export interface User {
   avatar?: string;
 }
 
+// Default test accounts that can be used to login
+const testAccounts = [
+  {
+    email: 'john.smith@example.com',
+    password: 'test123',
+    name: 'John Smith',
+    avatar: 'https://i.pravatar.cc/150?img=12'
+  }
+];
+
 export const mockAuth = {
   getCurrentUser: () => {
     // For demo purposes, always return null to simulate no user logged in
@@ -14,11 +24,22 @@ export const mockAuth = {
   },
 
   signIn: (email: string, password: string) => {
-    // Find the user with the provided email
-    const user = users.find(u => u.email === email);
-    
+    // First check the test accounts
+    const testAccount = testAccounts.find((account) => account.email === email && account.password === password);
+    if (testAccount) {
+      return Promise.resolve({
+        id: 'test-' + testAccount.email,
+        email: testAccount.email,
+        name: testAccount.name,
+        avatar: testAccount.avatar
+      });
+    }
+
+    // Then check the regular users
+    const user = users.find((u) => u.email === email);
     if (user) {
       // In a real app, we would verify the password here
+      // For demo, accept any password
       return Promise.resolve({
         id: user.uid,
         email: user.email,
@@ -26,7 +47,7 @@ export const mockAuth = {
         avatar: user.avatar
       });
     }
-    
+
     return Promise.reject(new Error('Invalid email or password'));
   },
 
