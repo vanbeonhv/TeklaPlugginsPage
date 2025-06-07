@@ -45,6 +45,8 @@ const Footer = () => {
           <div className=' text-bright-blue-500 underline font-medium'>
             <Link to='/about'>About</Link>
           </div>
+          <span>@MarcNguyen - 2023</span>
+
         </div>
       </div>
     </>
